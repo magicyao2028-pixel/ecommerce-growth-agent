@@ -1,0 +1,74 @@
+openapi: 3.1.0
+info:
+  title: E-commerce Growth Agent API
+  version: 0.2.0-draft
+  description: Draft API contract for the planned service version.
+paths:
+  /analyses:
+    post:
+      summary: Run a controlled e-commerce analysis
+      operationId: createAnalysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [rows]
+              properties:
+                rows:
+                  type: array
+                  minItems: 1
+                  items:
+                    $ref: "#/components/schemas/SalesRow"
+      responses:
+        "200":
+          description: Structured analysis report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisReport"
+        "400":
+          description: Invalid input data
+        "429":
+          description: Rate limit exceeded
+        "500":
+          description: Unexpected server error
+components:
+  schemas:
+    SalesRow:
+      type: object
+      required: [date, sku, product_name, category, impressions, clicks, orders, units, revenue, ad_spend, cost, stock]
+      properties:
+        date: { type: string, format: date }
+        sku: { type: string, minLength: 1 }
+        product_name: { type: string, minLength: 1 }
+        category: { type: string }
+        impressions: { type: integer, minimum: 0 }
+        clicks: { type: integer, minimum: 0 }
+        orders: { type: integer, minimum: 0 }
+        units: { type: integer, minimum: 0 }
+        revenue: { type: number, minimum: 0 }
+        ad_spend: { type: number, minimum: 0 }
+        cost: { type: number, minimum: 0 }
+        stock: { type: integer, minimum: 0 }
+    AnalysisReport:
+      type: object
+      required: [generated_at, summary, findings, recommendations, trace]
+      properties:
+        generated_at: { type: string, format: date-time }
+        data_freshness: { type: string }
+        summary: { type: object, additionalProperties: true }
+        findings:
+          type: array
+          items:
+            type: object
+            required: [sku, severity, code, evidence, recommended_action]
+            properties:
+              sku: { type: string }
+              severity: { type: string, enum: [critical, high, medium, low] }
+              code: { type: string }
+              evidence: { type: string }
+              recommended_action: { type: string }
+        recommendations: { type: array, items: { type: object, additionalProperties: true } }
+        trace: { type: array, items: { type: object, additionalProperties: true } }

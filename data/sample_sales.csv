@@ -1,0 +1,9 @@
+date,sku,product_name,category,impressions,clicks,orders,units,revenue,ad_spend,cost,stock
+2026-07-01,TEA-001,Jasmine Tea Gift Box,Tea,12000,300,21,23,3450,820,1550,52
+2026-07-02,TEA-001,Jasmine Tea Gift Box,Tea,12800,315,23,25,3750,850,1680,52
+2026-07-01,FRUIT-002,Dried Mango Pack,Snacks,18000,250,5,6,354,310,210,430
+2026-07-02,FRUIT-002,Dried Mango Pack,Snacks,17500,235,4,4,236,295,145,430
+2026-07-01,SAUCE-003,Chili Sauce Trio,Food,9500,380,34,39,2301,420,1170,18
+2026-07-02,SAUCE-003,Chili Sauce Trio,Food,10200,410,38,43,2537,440,1290,18
+2026-07-01,COFFEE-004,Drip Coffee Set,Beverage,5000,160,12,13,1287,390,620,88
+2026-07-02,COFFEE-004,Drip Coffee Set,Beverage,5300,170,11,12,1188,400,570,88

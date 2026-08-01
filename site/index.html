@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Offline e-commerce operations analysis prototype">
+  <title>E-commerce Growth Agent</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">G</span><span>Growth Agent</span></div>
+      <nav aria-label="Primary navigation">
+        <a class="active" href="#overview">Overview</a>
+        <a href="#findings">Diagnostics</a>
+        <a href="#actions">Action plan</a>
+        <a href="#trace">Agent trace</a>
+      </nav>
+      <div class="privacy-note">
+        <strong>Offline prototype</strong>
+        <span>No data leaves your browser.</span>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">OPERATIONS INTELLIGENCE</p>
+          <h1>E-commerce Growth Agent</h1>
+          <p class="subtitle">Turn sales, traffic, advertising and inventory data into reviewable actions.</p>
+        </div>
+        <div class="actions">
+          <label class="button secondary" for="csv-input">Upload CSV</label>
+          <input id="csv-input" type="file" accept=".csv" hidden>
+          <button class="button primary" id="sample-button" type="button">Analyze sample data</button>
+        </div>
+      </header>
+
+      <div id="message" class="message" role="status">Load the sample dataset or upload a CSV using the documented schema.</div>
+
+      <section id="overview" aria-labelledby="overview-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">PORTFOLIO HEALTH</p><h2 id="overview-title">Executive overview</h2></div>
+          <span class="status" id="run-status">Ready</span>
+        </div>
+        <div class="kpi-grid">
+          <article class="kpi"><span>GMV</span><strong id="gmv">—</strong><small>Gross merchandise value</small></article>
+          <article class="kpi"><span>Orders</span><strong id="orders">—</strong><small>Completed orders</small></article>
+          <article class="kpi"><span>Conversion</span><strong id="conversion">—</strong><small>Orders ÷ clicks</small></article>
+          <article class="kpi"><span>Ad ROI</span><strong id="roi">—</strong><small>Revenue ÷ ad spend</small></article>
+          <article class="kpi accent"><span>Contribution profit</span><strong id="profit">—</strong><small>After product and ad cost</small></article>
+        </div>
+      </section>
+
+      <section id="findings" aria-labelledby="findings-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">EVIDENCE FIRST</p><h2 id="findings-title">Diagnostic findings</h2></div>
+          <span class="count" id="finding-count">0 findings</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Severity</th><th>SKU</th><th>Signal</th><th>Evidence</th></tr></thead>
+            <tbody id="finding-rows"><tr><td colspan="4" class="empty">No analysis has been run.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="actions" aria-labelledby="actions-title">
+        <div class="section-heading"><div><p class="eyebrow">HUMAN APPROVAL REQUIRED</p><h2 id="actions-title">Prioritized action plan</h2></div></div>
+        <div class="action-list" id="action-list"><div class="empty-card">Recommendations will appear here after analysis.</div></div>
+      </section>
+
+      <section id="trace" aria-labelledby="trace-title">
+        <div class="section-heading"><div><p class="eyebrow">EXPLAINABLE ORCHESTRATION</p><h2 id="trace-title">Agent execution trace</h2></div></div>
+        <ol class="trace-list" id="trace-list"><li>Waiting for a dataset.</li></ol>
+      </section>
+
+      <footer>Product-validation MVP · Synthetic sample data · No paid API required</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
