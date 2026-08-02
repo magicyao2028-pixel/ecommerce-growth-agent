@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Product | E-commerce Growth Agent |
-| Version | 0.1 |
+| Version | 0.2 |
 | Status | Product-validation MVP |
 | Primary user | Owner or operations lead in a small e-commerce team |
 | Data policy | Synthetic data in the public edition |
@@ -69,7 +69,7 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 | FR-05 | Prioritize actions | Must | Critical findings appear before high and medium findings. |
 | FR-06 | Show execution trace | Should | User can see which tools were executed and why. |
 | FR-07 | Export JSON | Should | CLI writes a structured report when an output path is provided. |
-| FR-08 | Configure thresholds | Could | Administrator can change guardrails in a future release. |
+| FR-08 | Configure thresholds | Must | User can load validated guardrails and the report preserves their effective values. |
 
 ## 7. Non-functional requirements
 
@@ -126,7 +126,8 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 ## 11. Release plan
 
 - **v0.1:** offline product-validation MVP;
-- **v0.2:** API, history and threshold configuration;
-- **v0.3:** evidence-constrained explanation layer;
-- **v0.4:** permissions, audit logs and controlled integrations;
+- **v0.2:** threshold configuration in the CLI and static prototype;
+- **v0.3:** API and persisted analysis history;
+- **v0.4:** evidence-constrained explanation layer;
+- **v0.5:** permissions, audit logs and controlled integrations;
 - **v1.0:** measured pilot and production-readiness review.

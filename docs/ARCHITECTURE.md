@@ -23,6 +23,7 @@ flowchart TB
       T3[SKU aggregation tool]
       T4[Diagnosis tool]
       T5[Recommendation tool]
+      CFG[Validated business guardrails]
     end
     subgraph Data
       CSV[CSV input]
@@ -30,6 +31,8 @@ flowchart TB
     end
     CSV --> W
     CSV --> C
+    CFG --> W
+    CFG --> C
     C --> A
     A --> T1 --> T2 --> T3 --> T4 --> T5
     A --> JSON
@@ -42,6 +45,7 @@ The browser prototype mirrors the Python domain logic for a zero-setup demonstra
 | Component | Responsibility |
 | --- | --- |
 | `domain.py` | Parse and validate input rows. |
+| `config.py` | Validate, load and serialize business review guardrails. |
 | `tools.py` | Perform calculations, diagnosis and recommendation construction. |
 | `agent.py` | Select tools in a controlled sequence and preserve a trace. |
 | `cli.py` | Provide a local execution interface and JSON export. |

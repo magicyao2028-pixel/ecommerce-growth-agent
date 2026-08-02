@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass
 from datetime import date
 from typing import Iterable
 
+from .config import BusinessThresholds
 from .domain import SalesRow
 
 
@@ -92,7 +93,11 @@ def aggregate_by_sku(rows: Iterable[SalesRow]) -> list[dict[str, float | int | s
     return sorted(result, key=lambda item: float(item["revenue"]), reverse=True)
 
 
-def diagnose_skus(sku_metrics: Iterable[dict[str, float | int | str]]) -> list[Finding]:
+def diagnose_skus(
+    sku_metrics: Iterable[dict[str, float | int | str]],
+    thresholds: BusinessThresholds | None = None,
+) -> list[Finding]:
+    guardrails = thresholds or BusinessThresholds()
     findings: list[Finding] = []
     for item in sku_metrics:
         sku = str(item["sku"])
@@ -103,36 +108,36 @@ def diagnose_skus(sku_metrics: Iterable[dict[str, float | int | str]]) -> list[F
         profit = float(item["contribution_profit"])
         cover = float(item["stock_cover_days"])
 
-        if ctr < 0.02:
+        if ctr < guardrails.low_ctr:
             findings.append(
                 Finding(
                     sku,
                     name,
                     "medium",
                     "LOW_CTR",
-                    f"CTR is {ctr:.1%}, below the 2.0% review threshold.",
+                    f"CTR is {ctr:.1%}, below the {guardrails.low_ctr:.1%} review threshold.",
                     "Review creative, title and audience targeting before increasing traffic spend.",
                 )
             )
-        if conversion < 0.03:
+        if conversion < guardrails.low_conversion_rate:
             findings.append(
                 Finding(
                     sku,
                     name,
                     "high",
                     "LOW_CONVERSION",
-                    f"Click-to-order conversion is {conversion:.1%}, below the 3.0% threshold.",
+                    f"Click-to-order conversion is {conversion:.1%}, below the {guardrails.low_conversion_rate:.1%} threshold.",
                     "Audit product page, price, reviews, offer and checkout friction.",
                 )
             )
-        if roi and roi < 1.5:
+        if roi and roi < guardrails.low_ad_roi:
             findings.append(
                 Finding(
                     sku,
                     name,
                     "high",
                     "LOW_AD_ROI",
-                    f"Advertising ROI is {roi:.2f}, below the 1.50 guardrail.",
+                    f"Advertising ROI is {roi:.2f}, below the {guardrails.low_ad_roi:.2f} guardrail.",
                     "Reduce or pause low-performing spend after human review; test a new audience or creative.",
                 )
             )
@@ -147,7 +152,7 @@ def diagnose_skus(sku_metrics: Iterable[dict[str, float | int | str]]) -> list[F
                     "Check pricing, discount, sourcing cost and paid traffic before accepting more volume.",
                 )
             )
-        if cover < 7:
+        if cover < guardrails.stockout_cover_days:
             findings.append(
                 Finding(
                     sku,
@@ -158,7 +163,7 @@ def diagnose_skus(sku_metrics: Iterable[dict[str, float | int | str]]) -> list[F
                     "Confirm demand forecast and replenishment lead time; prepare a controlled reorder.",
                 )
             )
-        elif cover > 60 and cover < 999:
+        elif cover > guardrails.overstock_cover_days and cover < 999:
             findings.append(
                 Finding(
                     sku,

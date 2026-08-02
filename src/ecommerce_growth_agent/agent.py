@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Iterable
 
+from .config import BusinessThresholds
 from .domain import SalesRow
 from .tools import (
     aggregate_by_sku,
@@ -25,6 +26,9 @@ class AgentTrace:
 class GrowthAgent:
     """Orchestrates transparent analysis tools without a paid model dependency."""
 
+    def __init__(self, thresholds: BusinessThresholds | None = None) -> None:
+        self.thresholds = thresholds or BusinessThresholds()
+
     def run(self, values: Iterable[SalesRow | dict[str, Any]]) -> dict[str, Any]:
         trace = AgentTrace()
         rows = [value if isinstance(value, SalesRow) else SalesRow.from_mapping(value) for value in values]
@@ -38,7 +42,7 @@ class GrowthAgent:
         sku_metrics = aggregate_by_sku(rows)
         trace.record("aggregate_by_sku", "Aggregate traffic, sales, advertising and stock by SKU.")
 
-        findings = diagnose_skus(sku_metrics)
+        findings = diagnose_skus(sku_metrics, self.thresholds)
         trace.record("diagnose_skus", "Apply explicit business guardrails and preserve evidence.")
 
         recommendations = build_recommendations(findings)
@@ -48,12 +52,13 @@ class GrowthAgent:
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "data_freshness": data_freshness(rows),
             "summary": summary,
+            "guardrails": self.thresholds.to_dict(),
             "sku_metrics": sku_metrics,
             "findings": [finding.to_dict() for finding in findings],
             "recommendations": recommendations,
             "trace": trace.steps,
             "limitations": [
-                "Thresholds are product hypotheses and must be configured for each business.",
+                "Configured thresholds are product hypotheses and require validation for each business.",
                 "Stock cover uses observed units per active date and is not a full demand forecast.",
                 "Recommendations are advisory and require human approval.",
             ],

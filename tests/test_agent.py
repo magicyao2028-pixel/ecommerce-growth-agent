@@ -1,6 +1,8 @@
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
-from ecommerce_growth_agent import GrowthAgent
+from ecommerce_growth_agent import BusinessThresholds, GrowthAgent, load_thresholds
 
 
 def row(**overrides):
@@ -46,6 +48,26 @@ class GrowthAgentTests(unittest.TestCase):
     def test_requires_input(self):
         with self.assertRaisesRegex(ValueError, "At least one sales row"):
             GrowthAgent().run([])
+
+    def test_custom_threshold_changes_diagnosis_and_is_reported(self):
+        data = [row(impressions=1000, clicks=15, orders=3, revenue=500, ad_spend=100, stock=100)]
+        default_codes = {finding["code"] for finding in GrowthAgent().run(data)["findings"]}
+        thresholds = BusinessThresholds(low_ctr=0.01, overstock_cover_days=200)
+        report = GrowthAgent(thresholds).run(data)
+        custom_codes = {finding["code"] for finding in report["findings"]}
+
+        self.assertIn("LOW_CTR", default_codes)
+        self.assertNotIn("LOW_CTR", custom_codes)
+        self.assertEqual(report["guardrails"]["low_ctr"], 0.01)
+
+    def test_loads_thresholds_and_rejects_invalid_ranges(self):
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "thresholds.json"
+            path.write_text('{"low_ad_roi": 2.25}', encoding="utf-8")
+            self.assertEqual(load_thresholds(path).low_ad_roi, 2.25)
+
+        with self.assertRaisesRegex(ValueError, "stockout_cover_days must be lower"):
+            BusinessThresholds(stockout_cover_days=90, overstock_cover_days=60)
 
 
 if __name__ == "__main__":

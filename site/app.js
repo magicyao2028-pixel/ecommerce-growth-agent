@@ -13,6 +13,28 @@ const severityOrder = {critical: 0, high: 1, medium: 2};
 const money = new Intl.NumberFormat("en-US", {style: "currency", currency: "CNY", maximumFractionDigits: 0});
 const percent = value => `${(value * 100).toFixed(1)}%`;
 const ratio = (a, b) => b ? a / b : 0;
+const thresholdDefaults = {lowCtr: .02, lowConversion: .03, lowRoi: 1.5, stockoutDays: 7, overstockDays: 60};
+
+function readThresholds() {
+  const values = {
+    lowCtr: Number(document.getElementById("low-ctr").value) / 100,
+    lowConversion: Number(document.getElementById("low-conversion").value) / 100,
+    lowRoi: Number(document.getElementById("low-roi").value),
+    stockoutDays: Number(document.getElementById("stockout-days").value),
+    overstockDays: Number(document.getElementById("overstock-days").value)
+  };
+  if (Object.values(values).some(value => !Number.isFinite(value) || value < 0)) throw new Error("Guardrails must be non-negative numbers.");
+  if (values.stockoutDays >= values.overstockDays) throw new Error("Stockout cover must be lower than overstock cover.");
+  return values;
+}
+
+function writeThresholds(values) {
+  document.getElementById("low-ctr").value = values.lowCtr * 100;
+  document.getElementById("low-conversion").value = values.lowConversion * 100;
+  document.getElementById("low-roi").value = values.lowRoi;
+  document.getElementById("stockout-days").value = values.stockoutDays;
+  document.getElementById("overstock-days").value = values.overstockDays;
+}
 
 function aggregate(rows) {
   const grouped = new Map();
@@ -33,16 +55,16 @@ function aggregate(rows) {
   }));
 }
 
-function diagnose(items) {
+function diagnose(items, thresholds) {
   const findings = [];
   const push = (item, severity, code, evidence, action, owner) => findings.push({item, severity, code, evidence, action, owner});
   items.forEach(item => {
-    if (item.ctr < .02) push(item,"medium","LOW_CTR",`CTR ${percent(item.ctr)} is below 2.0%.`,"Review creative, title and audience targeting.","Growth / Advertising");
-    if (item.conversion < .03) push(item,"high","LOW_CONVERSION",`Conversion ${percent(item.conversion)} is below 3.0%.`,"Audit product page, price, reviews and checkout friction.","Product Operations");
-    if (item.roi > 0 && item.roi < 1.5) push(item,"high","LOW_AD_ROI",`Ad ROI ${item.roi.toFixed(2)} is below 1.50.`,"Reduce spend after review and test a new creative or audience.","Growth / Advertising");
+    if (item.ctr < thresholds.lowCtr) push(item,"medium","LOW_CTR",`CTR ${percent(item.ctr)} is below ${percent(thresholds.lowCtr)}.`,"Review creative, title and audience targeting.","Growth / Advertising");
+    if (item.conversion < thresholds.lowConversion) push(item,"high","LOW_CONVERSION",`Conversion ${percent(item.conversion)} is below ${percent(thresholds.lowConversion)}.`,"Audit product page, price, reviews and checkout friction.","Product Operations");
+    if (item.roi > 0 && item.roi < thresholds.lowRoi) push(item,"high","LOW_AD_ROI",`Ad ROI ${item.roi.toFixed(2)} is below ${thresholds.lowRoi.toFixed(2)}.`,"Reduce spend after review and test a new creative or audience.","Growth / Advertising");
     if (item.profit < 0) push(item,"critical","NEGATIVE_CONTRIBUTION",`Contribution profit is ${money.format(item.profit)}.`,"Review price, discount, sourcing cost and paid traffic.","Business Owner");
-    if (item.cover < 7) push(item,"high","STOCKOUT_RISK",`Estimated stock cover is ${item.cover.toFixed(1)} days.`,"Confirm forecast and supplier lead time before reorder.","Supply Chain");
-    else if (item.cover > 60 && item.cover < 999) push(item,"medium","OVERSTOCK_RISK",`Estimated stock cover is ${item.cover.toFixed(1)} days.`,"Slow procurement and test a margin-safe promotion.","Supply Chain");
+    if (item.cover < thresholds.stockoutDays) push(item,"high","STOCKOUT_RISK",`Estimated stock cover is ${item.cover.toFixed(1)} days; guardrail is ${thresholds.stockoutDays}.`,"Confirm forecast and supplier lead time before reorder.","Supply Chain");
+    else if (item.cover > thresholds.overstockDays && item.cover < 999) push(item,"medium","OVERSTOCK_RISK",`Estimated stock cover is ${item.cover.toFixed(1)} days; guardrail is ${thresholds.overstockDays}.`,"Slow procurement and test a margin-safe promotion.","Supply Chain");
   });
   return findings.sort((a,b) => severityOrder[a.severity] - severityOrder[b.severity] || a.item.sku.localeCompare(b.item.sku));
 }
@@ -54,7 +76,8 @@ function analyze(rows, source) {
   const numeric = ["impressions","clicks","orders","units","revenue","ad_spend","cost","stock"];
   rows.forEach(row => numeric.forEach(key => row[key] = Number(row[key])));
   const items = aggregate(rows);
-  const findings = diagnose(items);
+  const thresholds = readThresholds();
+  const findings = diagnose(items, thresholds);
   const total = key => rows.reduce((sum,row) => sum + Number(row[key]), 0);
   const revenue = total("revenue"), adSpend = total("ad_spend"), cost = total("cost");
   renderSummary({gmv:revenue, orders:total("orders"), conversion:ratio(total("orders"),total("clicks")), roi:ratio(revenue,adSpend), profit:revenue-adSpend-cost});
@@ -106,6 +129,10 @@ function escapeHtml(value) {
 }
 
 document.getElementById("sample-button").addEventListener("click", () => analyze(sampleRows.map(row => ({...row})), "Synthetic sample"));
+document.getElementById("reset-thresholds").addEventListener("click", () => {
+  writeThresholds(thresholdDefaults);
+  analyze(sampleRows.map(row => ({...row})), "Synthetic sample with default guardrails");
+});
 document.getElementById("csv-input").addEventListener("change", event => {
   const file = event.target.files[0];
   if (!file) return;

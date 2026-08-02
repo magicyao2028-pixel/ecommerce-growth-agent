@@ -58,6 +58,7 @@ Requirements: Python 3.10 or later. No third-party runtime dependency is require
 ```bash
 python -m pip install -e .
 growth-agent data/sample_sales.csv --output report.json
+growth-agent data/sample_sales.csv --config config/business_thresholds.json --output report.json
 python -m unittest discover -s tests -v
 ```
 
@@ -93,6 +94,10 @@ The agent returns:
 
 This is a product-validation MVP, not a production ERP or advertising platform. It does not automatically change prices, pause campaigns, place purchase orders or publish content. High-impact actions require human confirmation.
 
+## Configurable business guardrails
+
+The default review thresholds are visible in [`config/business_thresholds.json`](config/business_thresholds.json). Operators can supply a JSON file through `--config`; the report preserves the effective values so a reviewer can reproduce why a finding appeared. The static prototype exposes the same five guardrails for an immediate what-if comparison.
+
 ## Documentation
 
 - [Product requirements document](docs/PRD.md)
@@ -106,9 +111,10 @@ This is a product-validation MVP, not a production ERP or advertising platform. 
 ## Roadmap
 
 - v0.1: offline metrics, diagnosis, recommendations and static prototype;
-- v0.2: FastAPI service and persisted analysis history;
-- v0.3: optional model-generated explanation with evidence constraints;
-- v0.4: role-based access, audit logs and configurable business rules;
+- v0.2: configurable business guardrails in the CLI and static prototype;
+- v0.3: FastAPI service and persisted analysis history;
+- v0.4: optional model-generated explanation with evidence constraints;
+- v0.5: role-based access and audit logs;
 - v1.0: controlled pilot with real users and measured operational outcomes.
 
 ## License

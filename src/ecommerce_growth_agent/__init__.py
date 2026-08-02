@@ -1,6 +1,7 @@
 """Offline e-commerce growth analysis agent."""
 
 from .agent import GrowthAgent
+from .config import BusinessThresholds, load_thresholds
 
-__all__ = ["GrowthAgent"]
-__version__ = "0.1.0"
+__all__ = ["BusinessThresholds", "GrowthAgent", "load_thresholds"]
+__version__ = "0.2.0"

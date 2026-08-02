@@ -1,0 +1,7 @@
+{
+  "low_ctr": 0.02,
+  "low_conversion_rate": 0.03,
+  "low_ad_roi": 1.5,
+  "stockout_cover_days": 7,
+  "overstock_cover_days": 60
+}

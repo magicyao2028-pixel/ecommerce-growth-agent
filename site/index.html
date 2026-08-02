@@ -13,6 +13,7 @@
       <div class="brand"><span class="brand-mark">G</span><span>Growth Agent</span></div>
       <nav aria-label="Primary navigation">
         <a class="active" href="#overview">Overview</a>
+        <a href="#guardrails">Guardrails</a>
         <a href="#findings">Diagnostics</a>
         <a href="#actions">Action plan</a>
         <a href="#trace">Agent trace</a>
@@ -38,6 +39,21 @@
       </header>
 
       <div id="message" class="message" role="status">Load the sample dataset or upload a CSV using the documented schema.</div>
+
+      <section id="guardrails" aria-labelledby="guardrails-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">BUSINESS CONFIGURATION</p><h2 id="guardrails-title">Review guardrails</h2></div>
+          <button class="button secondary" id="reset-thresholds" type="button">Reset defaults</button>
+        </div>
+        <div class="guardrail-grid">
+          <label>Low CTR (%)<input id="low-ctr" type="number" min="0" max="100" step="0.1" value="2"></label>
+          <label>Low conversion (%)<input id="low-conversion" type="number" min="0" max="100" step="0.1" value="3"></label>
+          <label>Low ad ROI<input id="low-roi" type="number" min="0" step="0.1" value="1.5"></label>
+          <label>Stockout cover (days)<input id="stockout-days" type="number" min="0" step="1" value="7"></label>
+          <label>Overstock cover (days)<input id="overstock-days" type="number" min="0" step="1" value="60"></label>
+        </div>
+        <p class="form-note">These are review hypotheses, not universal business rules. Change them, then analyze the sample again to compare findings.</p>
+      </section>
 
       <section id="overview" aria-labelledby="overview-title">
         <div class="section-heading">

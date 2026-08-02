@@ -12,6 +12,7 @@ Evaluate whether the product calculates correctly, identifies useful risks and h
 - invalid schema and impossible funnel values are rejected;
 - severity ordering is stable;
 - the same input produces the same diagnosis.
+- custom thresholds change only the relevant findings and are preserved in the output.
 
 ### 2. Diagnostic quality
 
@@ -55,6 +56,7 @@ Measure:
 | Conversion below 3% | High finding. |
 | Stock cover below seven days | High stockout risk. |
 | No guardrail breach | Empty findings list, not an invented recommendation. |
+| Custom CTR threshold | Finding changes predictably and report records the supplied value. |
 
 ## Decision gate for v1.0
 
