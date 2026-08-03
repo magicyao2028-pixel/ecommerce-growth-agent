@@ -58,6 +58,18 @@ Measure:
 | No guardrail breach | Empty findings list, not an invented recommendation. |
 | Custom CTR threshold | Finding changes predictably and report records the supplied value. |
 
+## Current synthetic baseline
+
+Run `growth-agent-eval` to regenerate [`reports/evaluation_report.md`](../reports/evaluation_report.md) and its JSON equivalent from [`data/evaluation_cases.json`](../data/evaluation_cases.json).
+
+The 2026-08-03 baseline contains seven engineered rule-isolation cases:
+
+- 7/7 exact case matches;
+- 6/6 implemented finding codes exercised;
+- zero unexpected findings in the fixture.
+
+This is regression and implementation-coverage evidence. Because the fixture was designed around known rules, the result must not be presented as real-world precision, user acceptance or business impact.
+
 ## Decision gate for v1.0
 
 Do not claim business impact until a controlled pilot establishes a baseline and post-intervention result. A successful technical demo is not proof of saved labor, increased GMV or improved profit.

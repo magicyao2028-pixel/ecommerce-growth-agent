@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2026-08-03
+
+- added seven reproducible synthetic rule-isolation cases;
+- added exact-match, expected-finding recall, false-positive and rule-coverage metrics;
+- added deterministic JSON and Markdown evaluation reports;
+- exercised all six implemented finding codes with 7/7 passing cases;
+- documented why the baseline is not evidence of real-world precision or business impact.
+
 ## 0.2.0 - 2026-08-02
 
 - added validated JSON business-threshold configuration;

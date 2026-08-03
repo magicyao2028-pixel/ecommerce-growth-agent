@@ -1,0 +1,58 @@
+[
+  {
+    "case_id": "HEALTHY_BASELINE",
+    "description": "Healthy operating signals produce no invented recommendation.",
+    "rows": [
+      {"date":"2026-07-01","sku":"HEALTHY-001","product_name":"Healthy Product","category":"Test","impressions":1000,"clicks":40,"orders":5,"units":5,"revenue":500,"ad_spend":100,"cost":200,"stock":100}
+    ],
+    "expected_findings": []
+  },
+  {
+    "case_id": "LOW_CTR_ONLY",
+    "description": "Low click-through rate is isolated from conversion and profit risks.",
+    "rows": [
+      {"date":"2026-07-01","sku":"CTR-001","product_name":"CTR Test Product","category":"Test","impressions":10000,"clicks":100,"orders":10,"units":10,"revenue":1000,"ad_spend":100,"cost":400,"stock":200}
+    ],
+    "expected_findings": [{"sku":"CTR-001","code":"LOW_CTR"}]
+  },
+  {
+    "case_id": "LOW_CONVERSION_ONLY",
+    "description": "Low click-to-order conversion is isolated.",
+    "rows": [
+      {"date":"2026-07-01","sku":"CVR-001","product_name":"Conversion Test Product","category":"Test","impressions":1000,"clicks":100,"orders":1,"units":1,"revenue":500,"ad_spend":100,"cost":200,"stock":20}
+    ],
+    "expected_findings": [{"sku":"CVR-001","code":"LOW_CONVERSION"}]
+  },
+  {
+    "case_id": "LOW_AD_ROI_ONLY",
+    "description": "Advertising ROI below the configured guardrail is isolated.",
+    "rows": [
+      {"date":"2026-07-01","sku":"ROI-001","product_name":"ROI Test Product","category":"Test","impressions":1000,"clicks":50,"orders":5,"units":5,"revenue":100,"ad_spend":80,"cost":10,"stock":100}
+    ],
+    "expected_findings": [{"sku":"ROI-001","code":"LOW_AD_ROI"}]
+  },
+  {
+    "case_id": "NEGATIVE_CONTRIBUTION_ONLY",
+    "description": "Negative contribution after product and advertising cost is isolated.",
+    "rows": [
+      {"date":"2026-07-01","sku":"PROFIT-001","product_name":"Profit Test Product","category":"Test","impressions":1000,"clicks":50,"orders":5,"units":5,"revenue":100,"ad_spend":20,"cost":100,"stock":100}
+    ],
+    "expected_findings": [{"sku":"PROFIT-001","code":"NEGATIVE_CONTRIBUTION"}]
+  },
+  {
+    "case_id": "STOCKOUT_ONLY",
+    "description": "Estimated stock cover below seven days is isolated.",
+    "rows": [
+      {"date":"2026-07-01","sku":"STOCK-LOW","product_name":"Low Stock Product","category":"Test","impressions":1000,"clicks":50,"orders":10,"units":10,"revenue":1000,"ad_spend":100,"cost":400,"stock":50}
+    ],
+    "expected_findings": [{"sku":"STOCK-LOW","code":"STOCKOUT_RISK"}]
+  },
+  {
+    "case_id": "OVERSTOCK_ONLY",
+    "description": "Estimated stock cover above 60 days is isolated.",
+    "rows": [
+      {"date":"2026-07-01","sku":"STOCK-HIGH","product_name":"High Stock Product","category":"Test","impressions":1000,"clicks":50,"orders":5,"units":1,"revenue":500,"ad_spend":100,"cost":200,"stock":100}
+    ],
+    "expected_findings": [{"sku":"STOCK-HIGH","code":"OVERSTOCK_RISK"}]
+  }
+]

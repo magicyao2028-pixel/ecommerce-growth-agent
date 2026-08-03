@@ -30,6 +30,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 | Technical design | [Architecture](docs/ARCHITECTURE.md) and [OpenAPI specification](docs/openapi.yaml) |
 | Agent workflow | Explicit tool selection, execution trace and recommendation prioritization |
 | Product validation | Unit tests, evaluation cases and acceptance criteria |
+| Reproducible evaluation | [Seven-case rule baseline](reports/evaluation_report.md) covering all six implemented findings |
 | Security thinking | Offline-first design, synthetic data and human approval boundaries |
 | User-facing prototype | Zero-cost static web application in [`site/`](site/) |
 
@@ -104,6 +105,7 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 - [Business workflow](docs/BUSINESS_FLOW.md)
 - [System architecture](docs/ARCHITECTURE.md)
 - [Evaluation plan](docs/EVALUATION.md)
+- [Generated evaluation baseline](reports/evaluation_report.md)
 - [Security and governance](docs/SECURITY.md)
 - [中文项目说明](docs/PRODUCT_PORTFOLIO_CN.md)
 - [OpenAPI specification](docs/openapi.yaml)
@@ -112,9 +114,10 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 
 - v0.1: offline metrics, diagnosis, recommendations and static prototype;
 - v0.2: configurable business guardrails in the CLI and static prototype;
-- v0.3: FastAPI service and persisted analysis history;
-- v0.4: optional model-generated explanation with evidence constraints;
-- v0.5: role-based access and audit logs;
+- v0.3: reproducible synthetic evaluation fixture and six-rule coverage report;
+- v0.4: FastAPI service and persisted analysis history;
+- v0.5: optional model-generated explanation with evidence constraints;
+- v0.6: role-based access and audit logs;
 - v1.0: controlled pilot with real users and measured operational outcomes.
 
 ## License

@@ -127,7 +127,8 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 
 - **v0.1:** offline product-validation MVP;
 - **v0.2:** threshold configuration in the CLI and static prototype;
-- **v0.3:** API and persisted analysis history;
-- **v0.4:** evidence-constrained explanation layer;
-- **v0.5:** permissions, audit logs and controlled integrations;
+- **v0.3:** reproducible synthetic evaluation fixture and rule-coverage report;
+- **v0.4:** API and persisted analysis history;
+- **v0.5:** evidence-constrained explanation layer;
+- **v0.6:** permissions, audit logs and controlled integrations;
 - **v1.0:** measured pilot and production-readiness review.

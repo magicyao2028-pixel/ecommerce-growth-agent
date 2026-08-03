@@ -1,0 +1,160 @@
+{
+  "fixture_type": "synthetic rule-isolation cases",
+  "guardrails": {
+    "low_ctr": 0.02,
+    "low_conversion_rate": 0.03,
+    "low_ad_roi": 1.5,
+    "stockout_cover_days": 7.0,
+    "overstock_cover_days": 60.0
+  },
+  "summary": {
+    "case_count": 7,
+    "passed_cases": 7,
+    "exact_case_match_rate": 1.0,
+    "expected_finding_recall": 1.0,
+    "false_positive_count": 0,
+    "rule_coverage": {
+      "covered": 6,
+      "supported": 6,
+      "rate": 1.0,
+      "covered_codes": [
+        "LOW_AD_ROI",
+        "LOW_CONVERSION",
+        "LOW_CTR",
+        "NEGATIVE_CONTRIBUTION",
+        "OVERSTOCK_RISK",
+        "STOCKOUT_RISK"
+      ],
+      "uncovered_codes": []
+    }
+  },
+  "cases": [
+    {
+      "case_id": "HEALTHY_BASELINE",
+      "description": "Healthy operating signals produce no invented recommendation.",
+      "passed": true,
+      "expected": [],
+      "actual": [],
+      "missing": [],
+      "unexpected": []
+    },
+    {
+      "case_id": "LOW_CTR_ONLY",
+      "description": "Low click-through rate is isolated from conversion and profit risks.",
+      "passed": true,
+      "expected": [
+        {
+          "sku": "CTR-001",
+          "code": "LOW_CTR"
+        }
+      ],
+      "actual": [
+        {
+          "sku": "CTR-001",
+          "code": "LOW_CTR"
+        }
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    {
+      "case_id": "LOW_CONVERSION_ONLY",
+      "description": "Low click-to-order conversion is isolated.",
+      "passed": true,
+      "expected": [
+        {
+          "sku": "CVR-001",
+          "code": "LOW_CONVERSION"
+        }
+      ],
+      "actual": [
+        {
+          "sku": "CVR-001",
+          "code": "LOW_CONVERSION"
+        }
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    {
+      "case_id": "LOW_AD_ROI_ONLY",
+      "description": "Advertising ROI below the configured guardrail is isolated.",
+      "passed": true,
+      "expected": [
+        {
+          "sku": "ROI-001",
+          "code": "LOW_AD_ROI"
+        }
+      ],
+      "actual": [
+        {
+          "sku": "ROI-001",
+          "code": "LOW_AD_ROI"
+        }
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    {
+      "case_id": "NEGATIVE_CONTRIBUTION_ONLY",
+      "description": "Negative contribution after product and advertising cost is isolated.",
+      "passed": true,
+      "expected": [
+        {
+          "sku": "PROFIT-001",
+          "code": "NEGATIVE_CONTRIBUTION"
+        }
+      ],
+      "actual": [
+        {
+          "sku": "PROFIT-001",
+          "code": "NEGATIVE_CONTRIBUTION"
+        }
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    {
+      "case_id": "STOCKOUT_ONLY",
+      "description": "Estimated stock cover below seven days is isolated.",
+      "passed": true,
+      "expected": [
+        {
+          "sku": "STOCK-LOW",
+          "code": "STOCKOUT_RISK"
+        }
+      ],
+      "actual": [
+        {
+          "sku": "STOCK-LOW",
+          "code": "STOCKOUT_RISK"
+        }
+      ],
+      "missing": [],
+      "unexpected": []
+    },
+    {
+      "case_id": "OVERSTOCK_ONLY",
+      "description": "Estimated stock cover above 60 days is isolated.",
+      "passed": true,
+      "expected": [
+        {
+          "sku": "STOCK-HIGH",
+          "code": "OVERSTOCK_RISK"
+        }
+      ],
+      "actual": [
+        {
+          "sku": "STOCK-HIGH",
+          "code": "OVERSTOCK_RISK"
+        }
+      ],
+      "missing": [],
+      "unexpected": []
+    }
+  ],
+  "interpretation": [
+    "These fixtures are engineered to isolate known rules; they do not estimate real-world precision or business impact.",
+    "A reviewed private dataset and operator labels are still required before production claims."
+  ]
+}
