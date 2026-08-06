@@ -16,6 +16,7 @@
         <a href="#guardrails">Guardrails</a>
         <a href="#findings">Diagnostics</a>
         <a href="#actions">Action plan</a>
+        <a href="#history">Local history</a>
         <a href="#trace">Agent trace</a>
       </nav>
       <div class="privacy-note">
@@ -87,12 +88,22 @@
         <div class="action-list" id="action-list"><div class="empty-card">Recommendations will appear here after analysis.</div></div>
       </section>
 
+      <section id="history" aria-labelledby="history-title">
+        <div class="section-heading"><div><p class="eyebrow">DATA-MINIMIZED PERSISTENCE</p><h2 id="history-title">Local analysis history boundary</h2></div><span class="count">90 days · 20 records</span></div>
+        <div class="history-grid">
+          <article class="history-card"><span>Current session preview</span><strong id="history-source">No run</strong><small id="history-summary">A safe summary appears after analysis.</small></article>
+          <article class="history-card"><span>Stored</span><strong>Summary + finding codes</strong><small>Source filename, counts and a SHA-256 data fingerprint.</small></article>
+          <article class="history-card excluded"><span>Never stored</span><strong>Source rows</strong><small>No customer identifiers, order details or free-text notes.</small></article>
+        </div>
+        <p class="form-note">The Python CLI provides the durable local JSON implementation. This browser card is a session-only preview and makes no database claim.</p>
+      </section>
+
       <section id="trace" aria-labelledby="trace-title">
         <div class="section-heading"><div><p class="eyebrow">EXPLAINABLE ORCHESTRATION</p><h2 id="trace-title">Agent execution trace</h2></div></div>
         <ol class="trace-list" id="trace-list"><li>Waiting for a dataset.</li></ol>
       </section>
 
-      <footer>Product-validation MVP · Synthetic sample data · No paid API required</footer>
+      <footer>v0.4 portfolio prototype · Synthetic sample data · Bounded local history · No paid API</footer>
     </main>
   </div>
   <script src="app.js"></script>

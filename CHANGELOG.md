@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 - 2026-08-06
+
+- added optional local analysis-history persistence with a safe summary schema;
+- added stable source-data fingerprints without retaining source rows;
+- added configurable record-count and age-based retention limits;
+- added five regression tests covering minimization, expiry, capacity and validation;
+- documented the single-user persistence boundary in the CLI, architecture, security guidance and browser prototype.
+
 ## 0.3.0 - 2026-08-03
 
 - added seven reproducible synthetic rule-isolation cases;

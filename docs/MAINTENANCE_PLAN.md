@@ -6,7 +6,7 @@ Each round must add implementation or measurable validation evidence. Cosmetic-o
 | --- | --- | --- |
 | M1 | Configurable and validated business guardrails | Complete |
 | M2 | Reproducible evaluation fixture and rule coverage report | Complete |
-| M3 | Analysis history with a local persistence boundary | Planned |
+| M3 | Analysis history with a local persistence boundary | Complete |
 | M4 | Evidence-constrained explanation adapter interface | Planned |
 | M5 | FastAPI service and contract tests | Planned |
 | M6 | Authentication and role model | Planned |

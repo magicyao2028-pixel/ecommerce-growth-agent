@@ -7,6 +7,8 @@
 - no data is sent from the browser prototype;
 - `.env` files are excluded from Git;
 - the product never executes external commercial actions.
+- optional history persists only summary fields and a data fingerprint, never uploaded source rows;
+- local history defaults to 90 days and 20 records, with pruning on append.
 
 ## Production threat areas
 
@@ -45,3 +47,5 @@
 ## Security release gate
 
 Before production, require a documented architecture review, data classification, access-control test, secret scan, dependency scan, backup-and-restore test and incident response owner.
+
+The current local JSON history is not encrypted, authenticated or tamper-evident. Operators must store it in an access-controlled location and delete it when the analysis purpose ends.

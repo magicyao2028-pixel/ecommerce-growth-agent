@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Product | E-commerce Growth Agent |
-| Version | 0.2 |
+| Version | 0.4 |
 | Status | Product-validation MVP |
 | Primary user | Owner or operations lead in a small e-commerce team |
 | Data policy | Synthetic data in the public edition |
@@ -48,6 +48,7 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 6. Show evidence and prioritized recommendations.
 7. Record an agent execution trace.
 8. Require human approval before any external business action.
+9. Optionally retain a bounded, data-minimized local analysis history.
 
 ### Out of scope
 
@@ -70,6 +71,8 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 | FR-06 | Show execution trace | Should | User can see which tools were executed and why. |
 | FR-07 | Export JSON | Should | CLI writes a structured report when an output path is provided. |
 | FR-08 | Configure thresholds | Must | User can load validated guardrails and the report preserves their effective values. |
+| FR-09 | Retain safe history | Should | Optional history stores summaries and fingerprints but excludes source rows. |
+| FR-10 | Enforce retention | Must | Age and record-count limits are applied whenever history is appended. |
 
 ## 7. Non-functional requirements
 
@@ -128,7 +131,7 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 - **v0.1:** offline product-validation MVP;
 - **v0.2:** threshold configuration in the CLI and static prototype;
 - **v0.3:** reproducible synthetic evaluation fixture and rule-coverage report;
-- **v0.4:** API and persisted analysis history;
+- **v0.4:** bounded local analysis history and retention controls;
 - **v0.5:** evidence-constrained explanation layer;
-- **v0.6:** permissions, audit logs and controlled integrations;
+- **v0.6:** API, permissions, audit logs and controlled integrations;
 - **v1.0:** measured pilot and production-readiness review.

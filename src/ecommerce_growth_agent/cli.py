@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .agent import GrowthAgent
 from .config import load_thresholds
+from .history import AnalysisHistoryStore, RetentionPolicy, fingerprint_rows
 
 
 def parse_args() -> argparse.Namespace:
@@ -14,6 +15,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("csv_file", type=Path, help="CSV file using the documented schema")
     parser.add_argument("--output", type=Path, help="Optional path for the JSON report")
     parser.add_argument("--config", type=Path, help="Optional JSON file containing business review thresholds")
+    parser.add_argument("--history", type=Path, help="Optional local JSON history file for safe summary records")
+    parser.add_argument("--history-max-records", type=int, default=20, help="Maximum local summary records")
+    parser.add_argument("--history-retain-days", type=int, default=90, help="Maximum record age in days")
     return parser.parse_args()
 
 
@@ -23,6 +27,12 @@ def main() -> None:
         rows = list(csv.DictReader(handle))
     thresholds = load_thresholds(args.config) if args.config else None
     report = GrowthAgent(thresholds).run(rows)
+    if args.history:
+        history_result = AnalysisHistoryStore(
+            args.history,
+            RetentionPolicy(args.history_max_records, args.history_retain_days),
+        ).append(report, args.csv_file.name, fingerprint_rows(rows))
+        report["history_record"] = history_result
     rendered = json.dumps(report, ensure_ascii=False, indent=2)
     if args.output:
         args.output.write_text(rendered + "\n", encoding="utf-8")

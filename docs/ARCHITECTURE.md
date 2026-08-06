@@ -24,10 +24,12 @@ flowchart TB
       T4[Diagnosis tool]
       T5[Recommendation tool]
       CFG[Validated business guardrails]
+      H[Bounded history store]
     end
     subgraph Data
       CSV[CSV input]
       JSON[Structured JSON report]
+      HIST[Safe summary history JSON]
     end
     CSV --> W
     CSV --> C
@@ -36,6 +38,7 @@ flowchart TB
     C --> A
     A --> T1 --> T2 --> T3 --> T4 --> T5
     A --> JSON
+    JSON --> H --> HIST
 ```
 
 The browser prototype mirrors the Python domain logic for a zero-setup demonstration. The Python package is the reference implementation for validation and testing.
@@ -49,6 +52,7 @@ The browser prototype mirrors the Python domain logic for a zero-setup demonstra
 | `tools.py` | Perform calculations, diagnosis and recommendation construction. |
 | `agent.py` | Select tools in a controlled sequence and preserve a trace. |
 | `cli.py` | Provide a local execution interface and JSON export. |
+| `history.py` | Fingerprint source data and persist only bounded, data-minimized summary records. |
 | `site/` | Demonstrate the product experience without a server. |
 
 ## Future service architecture
@@ -90,3 +94,7 @@ A model must not:
 - invent missing data;
 - execute campaign, pricing or procurement actions without approval;
 - receive secrets or personal information in prompts.
+
+## Current local persistence boundary
+
+The v0.4 history store retains summary KPIs, finding codes, counts, the source filename and a SHA-256 data fingerprint. It excludes uploaded rows and order/customer-level details. Its default 90-day and 20-record limits are enforced on every append. The JSON file has no authentication, encryption or tamper evidence and is not presented as a production database.

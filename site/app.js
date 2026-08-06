@@ -83,9 +83,15 @@ function analyze(rows, source) {
   renderSummary({gmv:revenue, orders:total("orders"), conversion:ratio(total("orders"),total("clicks")), roi:ratio(revenue,adSpend), profit:revenue-adSpend-cost});
   renderFindings(findings);
   renderActions(findings);
+  renderHistory(source, {gmv:revenue, orders:total("orders")}, findings);
   renderTrace();
   document.getElementById("run-status").textContent = "Analysis complete";
   document.getElementById("message").textContent = `${source}: ${rows.length} rows and ${items.length} SKUs analyzed locally. No external request was made.`;
+}
+
+function renderHistory(source, summary, findings) {
+  document.getElementById("history-source").textContent = source;
+  document.getElementById("history-summary").textContent = `${money.format(summary.gmv)} GMV · ${summary.orders} orders · ${findings.length} finding codes. Source rows are excluded.`;
 }
 
 function renderSummary(summary) {

@@ -19,6 +19,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 - detects traffic, conversion, advertising and stock risks by SKU;
 - prioritizes actions with explicit evidence;
 - keeps a visible execution trace for review;
+- keeps a bounded local history of safe analysis summaries without source rows;
 - works offline and does not require a paid model API.
 
 ## What this repository demonstrates
@@ -31,6 +32,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 | Agent workflow | Explicit tool selection, execution trace and recommendation prioritization |
 | Product validation | Unit tests, evaluation cases and acceptance criteria |
 | Reproducible evaluation | [Seven-case rule baseline](reports/evaluation_report.md) covering all six implemented findings |
+| Data-minimized persistence | Local summary history with fingerprints, age limits and record limits |
 | Security thinking | Offline-first design, synthetic data and human approval boundaries |
 | User-facing prototype | Zero-cost static web application in [`site/`](site/) |
 
@@ -60,6 +62,7 @@ Requirements: Python 3.10 or later. No third-party runtime dependency is require
 python -m pip install -e .
 growth-agent data/sample_sales.csv --output report.json
 growth-agent data/sample_sales.csv --config config/business_thresholds.json --output report.json
+growth-agent data/sample_sales.csv --history output/analysis_history.json --history-retain-days 90 --history-max-records 20
 python -m unittest discover -s tests -v
 ```
 
@@ -91,6 +94,10 @@ The agent returns:
 - a transparent execution trace;
 - warnings when data or assumptions are incomplete.
 
+## Local analysis history
+
+The optional `--history` file stores only portfolio summaries, finding codes, counts, the source filename and a SHA-256 data fingerprint. It deliberately excludes source rows, customer identifiers, order details and free-text notes. The default policy retains at most 20 records for 90 days; both limits are explicit CLI options. This is single-user local persistence, not a shared database or an audit-compliant record system.
+
 ## Product boundaries
 
 This is a product-validation MVP, not a production ERP or advertising platform. It does not automatically change prices, pause campaigns, place purchase orders or publish content. High-impact actions require human confirmation.
@@ -115,9 +122,9 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 - v0.1: offline metrics, diagnosis, recommendations and static prototype;
 - v0.2: configurable business guardrails in the CLI and static prototype;
 - v0.3: reproducible synthetic evaluation fixture and six-rule coverage report;
-- v0.4: FastAPI service and persisted analysis history;
+- v0.4: bounded local analysis history with explicit data-retention boundaries;
 - v0.5: optional model-generated explanation with evidence constraints;
-- v0.6: role-based access and audit logs;
+- v0.6: FastAPI service, role-based access and audit logs;
 - v1.0: controlled pilot with real users and measured operational outcomes.
 
 ## License
