@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from ecommerce_growth_agent import AnalysisHistoryStore, GrowthAgent, RetentionPolicy, fingerprint_rows
+from ecommerce_growth_agent import AnalysisHistoryStore, BusinessThresholds, GrowthAgent, RetentionPolicy, fingerprint_rows
 
 
 def sales_row(revenue: int = 500) -> dict[str, object]:
@@ -88,6 +88,41 @@ class AnalysisHistoryTests(unittest.TestCase):
         self.assertEqual(second["status"], "duplicate_skipped")
         self.assertEqual(second["record"]["run_id"], first["record"]["run_id"])
         self.assertEqual(len(payload["records"]), 1)
+
+    def test_same_rows_with_different_guardrails_are_distinct_analyses(self):
+        rows = [sales_row()]
+        fingerprint = fingerprint_rows(rows)
+        default_report = GrowthAgent().run(rows)
+        changed_report = GrowthAgent(BusinessThresholds(low_ctr=0.01)).run(rows)
+        now = datetime(2026, 8, 17, tzinfo=timezone.utc)
+        with TemporaryDirectory() as directory:
+            store = AnalysisHistoryStore(Path(directory) / "history.json")
+            first = store.append(default_report, "sales.csv", fingerprint, now)
+            second = store.append(changed_report, "sales.csv", fingerprint, now + timedelta(seconds=5))
+            payload = store.read()
+
+        self.assertEqual(first["status"], "stored")
+        self.assertEqual(second["status"], "stored")
+        self.assertNotEqual(
+            first["record"]["analysis_context_fingerprint"],
+            second["record"]["analysis_context_fingerprint"],
+        )
+        self.assertEqual(len(payload["records"]), 2)
+
+    def test_same_rows_from_different_source_filenames_are_distinct_analyses(self):
+        rows = [sales_row()]
+        report = GrowthAgent().run(rows)
+        fingerprint = fingerprint_rows(rows)
+        now = datetime(2026, 8, 17, tzinfo=timezone.utc)
+        with TemporaryDirectory() as directory:
+            store = AnalysisHistoryStore(Path(directory) / "history.json")
+            first = store.append(report, "store-a.csv", fingerprint, now)
+            second = store.append(report, "store-b.csv", fingerprint, now + timedelta(seconds=5))
+            payload = store.read()
+
+        self.assertEqual(first["status"], "stored")
+        self.assertEqual(second["status"], "stored")
+        self.assertEqual(len(payload["records"]), 2)
 
     def test_rejects_invalid_retention_policy(self):
         with self.assertRaisesRegex(ValueError, "max_records"):

@@ -99,7 +99,7 @@ The agent returns:
 
 ## Local analysis history
 
-The optional `--history` file stores only portfolio summaries, finding codes, counts, the source filename and a SHA-256 data fingerprint. It deliberately excludes source rows, customer identifiers, order details and free-text notes. The default policy retains at most 20 records for 90 days; both limits are explicit CLI options. This is single-user local persistence, not a shared database or an audit-compliant record system.
+The optional `--history` file stores only portfolio summaries, finding codes, counts, the source filename, a SHA-256 data fingerprint and a hash of the effective guardrail context. Identical retries are skipped only when the source, data and guardrails match. It deliberately excludes source rows, customer identifiers, order details and free-text notes. The default policy retains at most 20 records for 90 days; both limits are explicit CLI options. This is single-user local persistence, not a shared database or an audit-compliant record system.
 
 ## Product boundaries
 

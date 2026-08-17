@@ -22,6 +22,8 @@ class TrialReadinessTests(unittest.TestCase):
         report = run_trial(ROOT)
         self.assertTrue(report["overall_passed"])
         self.assertEqual(report["feedback_regression"]["retry_status"], "duplicate_skipped")
+        self.assertEqual(report["feedback_regression"]["changed_guardrail_status"], "stored")
+        self.assertEqual(report["feedback_regression"]["stored_records"], 2)
         self.assertTrue(report["failure_path"]["passed"])
 
     def test_evidence_index_links_real_files(self):

@@ -28,5 +28,5 @@ M5 should add an evidence-constrained explanation-adapter interface while preser
 - Thresholds remain hypotheses until reviewed against a real, private dataset outside the public repository.
 - The seven-case evaluation fixture is engineered regression evidence, not real-world precision evidence.
 - Local history is single-user JSON, not a shared database or tamper-evident audit log.
-- Duplicate suppression uses source filename plus data fingerprint; it is local idempotency, not distributed job coordination.
+- Duplicate suppression uses source filename plus data and effective-guardrail fingerprints; it is local idempotency, not distributed job coordination.
 - There is no authentication, API service, or real user pilot.

@@ -9,6 +9,7 @@ from tempfile import TemporaryDirectory
 from typing import Any
 
 from .agent import GrowthAgent
+from .config import BusinessThresholds
 from .history import AnalysisHistoryStore, fingerprint_rows
 
 
@@ -146,11 +147,24 @@ def run_trial(root: Path) -> dict[str, Any]:
         fingerprint = fingerprint_rows(rows)
         first = store.append(core_report, sample_path.name, fingerprint, fixed_now)
         second = store.append(core_report, sample_path.name, fingerprint, fixed_now + timedelta(seconds=5))
+        changed_report = GrowthAgent(BusinessThresholds(low_ctr=0.01)).run(rows)
+        changed_context = store.append(
+            changed_report,
+            sample_path.name,
+            fingerprint,
+            fixed_now + timedelta(seconds=10),
+        )
         stored_records = len(store.read()["records"])
     feedback_runtime = {
-        "passed": first["status"] == "stored" and second["status"] == "duplicate_skipped" and stored_records == 1,
+        "passed": (
+            first["status"] == "stored"
+            and second["status"] == "duplicate_skipped"
+            and changed_context["status"] == "stored"
+            and stored_records == 2
+        ),
         "first_status": first["status"],
         "retry_status": second["status"],
+        "changed_guardrail_status": changed_context["status"],
         "stored_records": stored_records,
     }
 
@@ -190,7 +204,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- Overall: **{'PASS' if report['overall_passed'] else 'FAIL'}**",
         f"- Core flow: {'PASS' if report['core_flow']['passed'] else 'FAIL'}",
         f"- Invalid funnel rejection: {'PASS' if report['failure_path']['passed'] else 'FAIL'}",
-        f"- Duplicate retry regression: {'PASS' if report['feedback_regression']['passed'] else 'FAIL'}",
+        f"- Configuration-aware retry regression: {'PASS' if report['feedback_regression']['passed'] else 'FAIL'}",
         f"- Evidence claims checked: {len(report['evidence_index'])}",
         f"- External candidates screened: {len(report['external_intake'])}",
         "",

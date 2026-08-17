@@ -60,7 +60,7 @@
     },
     {
       "claim_id": "ECOM-FEEDBACK-001",
-      "statement": "A synthetic retry defect is linked to an idempotency change and regression test.",
+      "statement": "A synthetic retry defect is linked to configuration-aware idempotency and regression tests.",
       "artifacts": [
         {"kind": "feedback", "path": "evidence/feedback_case.json"},
         {"kind": "implementation", "path": "src/ecommerce_growth_agent/history.py"},

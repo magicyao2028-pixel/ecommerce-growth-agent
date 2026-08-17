@@ -5,7 +5,7 @@
 - Overall: **PASS**
 - Core flow: PASS
 - Invalid funnel rejection: PASS
-- Duplicate retry regression: PASS
+- Configuration-aware retry regression: PASS
 - Evidence claims checked: 7
 - External candidates screened: 2
 

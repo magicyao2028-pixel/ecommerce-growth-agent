@@ -22,7 +22,7 @@ The trial command validates the machine-readable evidence index, screens the rec
 - `reports/trial_report.json` reports `overall_passed: true`;
 - eight synthetic rows produce all six implemented diagnostic codes;
 - an impossible funnel row is rejected;
-- an identical history retry returns `duplicate_skipped` and one record remains;
+- an identical data-and-guardrail retry returns `duplicate_skipped`, while changed guardrails remain a distinct analysis;
 - no external write or paid service is used.
 
 ## Recovery

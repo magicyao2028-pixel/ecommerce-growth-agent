@@ -26,6 +26,19 @@ def fingerprint_rows(rows: Iterable[dict[str, Any]]) -> str:
     return "sha256:" + hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
+def fingerprint_analysis_context(data_fingerprint: str, report: dict[str, Any]) -> str:
+    normalized = json.dumps(
+        {
+            "data_fingerprint": data_fingerprint,
+            "guardrails": report.get("guardrails", {}),
+        },
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    return "sha256:" + hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
 class AnalysisHistoryStore:
     """Persists safe analysis summaries while excluding source-row details."""
 
@@ -51,10 +64,11 @@ class AnalysisHistoryStore:
         ]
         removed_by_age = len(payload["records"]) - len(retained)
         source_name = Path(source_label).name
+        analysis_context_fingerprint = fingerprint_analysis_context(data_fingerprint, report)
         duplicate = next(
             (
                 item for item in reversed(retained)
-                if item.get("data_fingerprint") == data_fingerprint
+                if item.get("analysis_context_fingerprint") == analysis_context_fingerprint
                 and item.get("source_label") == source_name
             ),
             None,
@@ -64,7 +78,7 @@ class AnalysisHistoryStore:
                 "schema_version": "1.0",
                 "retention_policy": asdict(self.policy),
                 "data_boundary": {
-                    "stored": ["portfolio summary", "finding codes", "counts", "source filename", "data fingerprint"],
+                    "stored": ["portfolio summary", "finding codes", "counts", "source filename", "data fingerprint", "analysis context fingerprint"],
                     "excluded": ["source rows", "customer identifiers", "order-level details", "free-text notes"],
                 },
                 "records": retained,
@@ -87,6 +101,7 @@ class AnalysisHistoryStore:
             "report_generated_at": report.get("generated_at"),
             "source_label": source_name,
             "data_fingerprint": data_fingerprint,
+            "analysis_context_fingerprint": analysis_context_fingerprint,
             "summary": deepcopy(report.get("summary", {})),
             "finding_count": len(report.get("findings", [])),
             "finding_codes": finding_codes,
@@ -101,7 +116,7 @@ class AnalysisHistoryStore:
             "schema_version": "1.0",
             "retention_policy": asdict(self.policy),
             "data_boundary": {
-                "stored": ["portfolio summary", "finding codes", "counts", "source filename", "data fingerprint"],
+                "stored": ["portfolio summary", "finding codes", "counts", "source filename", "data fingerprint", "analysis context fingerprint"],
                 "excluded": ["source rows", "customer identifiers", "order-level details", "free-text notes"],
             },
             "records": retained,
