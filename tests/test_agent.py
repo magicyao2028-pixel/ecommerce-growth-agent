@@ -69,6 +69,14 @@ class GrowthAgentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "stockout_cover_days must be lower"):
             BusinessThresholds(stockout_cover_days=90, overstock_cover_days=60)
 
+    def test_rejects_non_finite_thresholds(self):
+        for value in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(ValueError, "finite numbers"):
+                    BusinessThresholds(low_ad_roi=value)
+        with self.assertRaisesRegex(ValueError, "finite numbers"):
+            BusinessThresholds.from_mapping({"low_ctr": "NaN"})
+
 
 if __name__ == "__main__":
     unittest.main()
