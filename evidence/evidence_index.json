@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "project": "ecommerce-growth-agent",
+  "trial": {
+    "trial_id": "TRIAL-ECOM-001",
+    "duration_minutes": 20,
+    "command": "growth-agent-trial",
+    "sample_input": "data/sample_sales.csv",
+    "expected": {
+      "row_count": 8,
+      "finding_codes": [
+        "LOW_AD_ROI",
+        "LOW_CONVERSION",
+        "LOW_CTR",
+        "NEGATIVE_CONTRIBUTION",
+        "OVERSTOCK_RISK",
+        "STOCKOUT_RISK"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "claim_id": "ECOM-BUSINESS-001",
+      "statement": "The workflow supports a bounded e-commerce operating review with human-owned actions.",
+      "artifacts": [
+        {"kind": "requirements", "path": "docs/PRD.md"},
+        {"kind": "business_flow", "path": "docs/BUSINESS_FLOW.md"}
+      ]
+    },
+    {
+      "claim_id": "ECOM-RUN-001",
+      "statement": "The synthetic CSV core flow runs offline without a paid API.",
+      "artifacts": [
+        {"kind": "implementation", "path": "src/ecommerce_growth_agent/agent.py"},
+        {"kind": "sample", "path": "data/sample_sales.csv"}
+      ]
+    },
+    {
+      "claim_id": "ECOM-CORRECT-001",
+      "statement": "Six diagnostic branches have deterministic regression evidence.",
+      "artifacts": [
+        {"kind": "tests", "path": "tests/test_evaluation.py"},
+        {"kind": "report", "path": "reports/evaluation_report.json"}
+      ]
+    },
+    {
+      "claim_id": "ECOM-FAIL-001",
+      "statement": "Invalid funnel input is rejected before recommendations are created.",
+      "artifacts": [
+        {"kind": "validation", "path": "src/ecommerce_growth_agent/domain.py"},
+        {"kind": "tests", "path": "tests/test_agent.py"}
+      ]
+    },
+    {
+      "claim_id": "ECOM-OSS-001",
+      "statement": "External components were screened with version and license provenance; none were forced into the zero-dependency trial.",
+      "artifacts": [
+        {"kind": "screening", "path": "evidence/external_intake.json"}
+      ]
+    },
+    {
+      "claim_id": "ECOM-FEEDBACK-001",
+      "statement": "A synthetic retry defect is linked to an idempotency change and regression test.",
+      "artifacts": [
+        {"kind": "feedback", "path": "evidence/feedback_case.json"},
+        {"kind": "implementation", "path": "src/ecommerce_growth_agent/history.py"},
+        {"kind": "test", "path": "tests/test_history.py"}
+      ]
+    },
+    {
+      "claim_id": "ECOM-LIMIT-001",
+      "statement": "Production gaps and non-adoption conditions are explicit.",
+      "artifacts": [
+        {"kind": "trial_guide", "path": "docs/TRIAL_GUIDE.md"},
+        {"kind": "security", "path": "docs/SECURITY.md"}
+      ]
+    }
+  ],
+  "boundaries": [
+    "Synthetic data only; no claim of real adoption or measured GMV impact.",
+    "Recommendations never write to stores, ad platforms, prices or purchase orders.",
+    "A real pilot still requires private-data review, role controls and an accountable business owner."
+  ]
+}

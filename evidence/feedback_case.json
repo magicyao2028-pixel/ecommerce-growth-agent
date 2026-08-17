@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "feedback_id": "FB-ECOM-SYN-001",
+  "source_type": "synthetic",
+  "recorded_on": "2026-08-17",
+  "classification": "defect",
+  "summary": "A scheduled retry with the same source file and fingerprint should not create a second history record.",
+  "reproduction": "Append the same report, source label and data fingerprint twice within five seconds.",
+  "observed_before": "Two history records were stored for one unchanged analysis input.",
+  "decision": "accepted",
+  "acceptance_test": "tests/test_history.py",
+  "implementation": "src/ecommerce_growth_agent/history.py",
+  "release_result": "The first write returns stored; an identical retry returns duplicate_skipped and preserves one record.",
+  "adoption_claim": "Synthetic regression case only; not real operator feedback or production adoption."
+}

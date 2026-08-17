@@ -21,6 +21,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 - keeps a visible execution trace for review;
 - keeps a bounded local history of safe analysis summaries without source rows;
 - works offline and does not require a paid model API.
+- provides a 10–20 minute reviewer trial with a machine-readable evidence chain and a feedback regression replay.
 
 ## What this repository demonstrates
 
@@ -35,6 +36,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 | Data-minimized persistence | Local summary history with fingerprints, age limits and record limits |
 | Security thinking | Offline-first design, synthetic data and human approval boundaries |
 | User-facing prototype | Zero-cost static web application in [`site/`](site/) |
+| Trial readiness | [Reviewer trial](docs/TRIAL_GUIDE.md), [evidence index](evidence/evidence_index.json), external-intake decision and synthetic feedback regression |
 
 ## Architecture
 
@@ -63,6 +65,7 @@ python -m pip install -e .
 growth-agent data/sample_sales.csv --output report.json
 growth-agent data/sample_sales.csv --config config/business_thresholds.json --output report.json
 growth-agent data/sample_sales.csv --history output/analysis_history.json --history-retain-days 90 --history-max-records 20
+growth-agent-trial
 python -m unittest discover -s tests -v
 ```
 
@@ -116,6 +119,10 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 - [Security and governance](docs/SECURITY.md)
 - [中文项目说明](docs/PRODUCT_PORTFOLIO_CN.md)
 - [OpenAPI specification](docs/openapi.yaml)
+- [Reviewer trial guide](docs/TRIAL_GUIDE.md)
+- [Machine-readable evidence index](evidence/evidence_index.json)
+- [External component screening](evidence/external_intake.json)
+- [Synthetic feedback case](evidence/feedback_case.json)
 
 ## Roadmap
 
@@ -123,8 +130,9 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 - v0.2: configurable business guardrails in the CLI and static prototype;
 - v0.3: reproducible synthetic evaluation fixture and six-rule coverage report;
 - v0.4: bounded local analysis history with explicit data-retention boundaries;
-- v0.5: optional model-generated explanation with evidence constraints;
-- v0.6: FastAPI service, role-based access and audit logs;
+- v0.5: reviewer trial, evidence index, governed external screening and feedback regression (current);
+- v0.6: optional model-generated explanation with evidence constraints;
+- v0.7: FastAPI service, role-based access and audit logs;
 - v1.0: controlled pilot with real users and measured operational outcomes.
 
 ## License

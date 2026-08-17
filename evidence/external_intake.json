@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "reviewed_on": "2026-08-17",
+  "candidates": [
+    {
+      "repository": "https://github.com/pydantic/pydantic",
+      "version": "v2.13.4",
+      "commit": "cf67d4b3193c3fe43ede18612ed62785eee11382",
+      "license": "MIT",
+      "decision": "rejected",
+      "reason": "Strong typed validation, but adding a runtime dependency does not improve this small fixed CSV contract enough to justify installation and migration cost in the zero-paid trial.",
+      "code_adopted": false
+    },
+    {
+      "repository": "https://github.com/fivetran/great_expectations",
+      "version": "1.20.0",
+      "commit": "6d3e59f98cb9de48837d74b06fc5dd0cbce214f4",
+      "license": "Apache-2.0",
+      "decision": "rejected",
+      "reason": "Useful for larger data-quality programs, but disproportionate for an eight-row offline reviewer trial whose implemented checks are already deterministic and tested.",
+      "code_adopted": false
+    }
+  ],
+  "adoption_summary": "No external code or dependency was adopted. The screening is evidence of a decision, not a claim of integration."
+}

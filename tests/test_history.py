@@ -73,6 +73,22 @@ class AnalysisHistoryTests(unittest.TestCase):
         self.assertEqual(first, fingerprint_rows([sales_row(500)]))
         self.assertNotEqual(first, fingerprint_rows([sales_row(501)]))
 
+    def test_identical_retry_is_idempotent(self):
+        rows = [sales_row()]
+        report = GrowthAgent().run(rows)
+        fingerprint = fingerprint_rows(rows)
+        now = datetime(2026, 8, 17, tzinfo=timezone.utc)
+        with TemporaryDirectory() as directory:
+            store = AnalysisHistoryStore(Path(directory) / "history.json")
+            first = store.append(report, "sales.csv", fingerprint, now)
+            second = store.append(report, "sales.csv", fingerprint, now + timedelta(seconds=5))
+            payload = store.read()
+
+        self.assertEqual(first["status"], "stored")
+        self.assertEqual(second["status"], "duplicate_skipped")
+        self.assertEqual(second["record"]["run_id"], first["record"]["run_id"])
+        self.assertEqual(len(payload["records"]), 1)
+
     def test_rejects_invalid_retention_policy(self):
         with self.assertRaisesRegex(ValueError, "max_records"):
             RetentionPolicy(max_records=0)

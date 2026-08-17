@@ -50,13 +50,42 @@ class AnalysisHistoryStore:
             if _parse_timestamp(item["recorded_at"]) >= cutoff
         ]
         removed_by_age = len(payload["records"]) - len(retained)
+        source_name = Path(source_label).name
+        duplicate = next(
+            (
+                item for item in reversed(retained)
+                if item.get("data_fingerprint") == data_fingerprint
+                and item.get("source_label") == source_name
+            ),
+            None,
+        )
+        if duplicate is not None:
+            saved = {
+                "schema_version": "1.0",
+                "retention_policy": asdict(self.policy),
+                "data_boundary": {
+                    "stored": ["portfolio summary", "finding codes", "counts", "source filename", "data fingerprint"],
+                    "excluded": ["source rows", "customer identifiers", "order-level details", "free-text notes"],
+                },
+                "records": retained,
+            }
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.path.write_text(json.dumps(saved, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            return {
+                "status": "duplicate_skipped",
+                "record": deepcopy(duplicate),
+                "retention": asdict(self.policy),
+                "removed_by_age": removed_by_age,
+                "removed_by_limit": 0,
+                "stored_records": len(retained),
+            }
 
         finding_codes = sorted({str(item.get("code", "")) for item in report.get("findings", []) if item.get("code")})
         record = {
             "run_id": f"RUN-{now.strftime('%Y%m%dT%H%M%SZ')}-{data_fingerprint.split(':')[-1][:8]}",
             "recorded_at": now.astimezone(timezone.utc).isoformat(),
             "report_generated_at": report.get("generated_at"),
-            "source_label": Path(source_label).name,
+            "source_label": source_name,
             "data_fingerprint": data_fingerprint,
             "summary": deepcopy(report.get("summary", {})),
             "finding_count": len(report.get("findings", [])),
@@ -80,6 +109,7 @@ class AnalysisHistoryStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(saved, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         return {
+            "status": "stored",
             "record": deepcopy(record),
             "retention": asdict(self.policy),
             "removed_by_age": removed_by_age,

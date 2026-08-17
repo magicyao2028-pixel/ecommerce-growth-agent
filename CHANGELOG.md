@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 - 2026-08-17
+
+- Added an executable reviewer trial and machine-readable evidence index.
+- Recorded exact external component versions, licenses and non-adoption reasons without forcing dependencies.
+- Converted a clearly synthetic duplicate-retry report into idempotent history behavior and a regression test.
+- Added failure-path verification, trial instructions, honest non-adoption conditions and public trial evidence.
+
 ## 0.4.0 - 2026-08-06
 
 - added optional local analysis-history persistence with a safe summary schema;
