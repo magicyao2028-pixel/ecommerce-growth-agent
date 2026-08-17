@@ -95,8 +95,10 @@ class AnalysisHistoryStore:
             }
 
         finding_codes = sorted({str(item.get("code", "")) for item in report.get("findings", []) if item.get("code")})
+        source_fingerprint = hashlib.sha256(source_name.encode("utf-8")).hexdigest()[:8]
+        context_fingerprint = analysis_context_fingerprint.split(":")[-1][:8]
         record = {
-            "run_id": f"RUN-{now.strftime('%Y%m%dT%H%M%SZ')}-{data_fingerprint.split(':')[-1][:8]}",
+            "run_id": f"RUN-{now.strftime('%Y%m%dT%H%M%SZ')}-{source_fingerprint}-{context_fingerprint}",
             "recorded_at": now.astimezone(timezone.utc).isoformat(),
             "report_generated_at": report.get("generated_at"),
             "source_label": source_name,

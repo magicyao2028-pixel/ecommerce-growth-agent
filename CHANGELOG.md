@@ -7,6 +7,8 @@
 - Converted a clearly synthetic duplicate-retry report into idempotent history behavior and a regression test.
 - Kept identical data under different effective guardrails as distinct analysis records.
 - Rejected non-finite business thresholds before analysis or JSON evidence generation.
+- Rejected boolean guardrails plus non-finite, boolean and fractional sales metrics before KPI calculation.
+- Made same-second analysis identifiers unique across source and effective-guardrail contexts.
 - Added failure-path verification, trial instructions, honest non-adoption conditions and public trial evidence.
 
 ## 0.4.0 - 2026-08-06

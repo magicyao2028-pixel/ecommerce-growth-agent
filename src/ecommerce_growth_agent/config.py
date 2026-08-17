@@ -46,6 +46,8 @@ class BusinessThresholds:
         unknown = sorted(set(value).difference(allowed))
         if unknown:
             raise ValueError(f"Unknown threshold fields: {', '.join(unknown)}")
+        if any(isinstance(item, bool) for item in value.values()):
+            raise ValueError("Threshold values must be finite numbers")
         try:
             parsed = {key: float(item) for key, item in value.items()}
         except (TypeError, ValueError) as exc:

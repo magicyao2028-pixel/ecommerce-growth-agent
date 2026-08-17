@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from dataclasses import asdict, dataclass
 from typing import Any
 
@@ -66,20 +67,37 @@ class SalesRow:
 
 
 def _as_non_negative_int(value: Any, field: str) -> int:
-    try:
-        parsed = int(value)
-    except (TypeError, ValueError) as exc:
-        raise ValueError(f"{field} must be an integer") from exc
+    if isinstance(value, bool):
+        raise ValueError(f"{field} must be an integer")
+    if isinstance(value, int):
+        parsed = value
+    elif isinstance(value, str):
+        try:
+            parsed = int(value.strip())
+        except ValueError as exc:
+            raise ValueError(f"{field} must be an integer") from exc
+    else:
+        try:
+            numeric = float(value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"{field} must be an integer") from exc
+        if not math.isfinite(numeric) or not numeric.is_integer():
+            raise ValueError(f"{field} must be an integer")
+        parsed = int(numeric)
     if parsed < 0:
         raise ValueError(f"{field} must not be negative")
     return parsed
 
 
 def _as_non_negative_float(value: Any, field: str) -> float:
+    if isinstance(value, bool):
+        raise ValueError(f"{field} must be a finite number")
     try:
         parsed = float(value)
     except (TypeError, ValueError) as exc:
         raise ValueError(f"{field} must be a number") from exc
+    if not math.isfinite(parsed):
+        raise ValueError(f"{field} must be a finite number")
     if parsed < 0:
         raise ValueError(f"{field} must not be negative")
     return parsed

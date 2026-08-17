@@ -76,6 +76,22 @@ class GrowthAgentTests(unittest.TestCase):
                     BusinessThresholds(low_ad_roi=value)
         with self.assertRaisesRegex(ValueError, "finite numbers"):
             BusinessThresholds.from_mapping({"low_ctr": "NaN"})
+        with self.assertRaisesRegex(ValueError, "finite numbers"):
+            BusinessThresholds.from_mapping({"low_ctr": True})
+
+    def test_rejects_non_finite_or_boolean_sales_numbers(self):
+        for field in ("revenue", "ad_spend", "cost"):
+            for value in ("NaN", "Infinity", "-Infinity", True):
+                with self.subTest(field=field, value=value):
+                    with self.assertRaisesRegex(ValueError, field):
+                        GrowthAgent().run([row(**{field: value})])
+
+    def test_rejects_boolean_and_fractional_count_fields(self):
+        for field in ("impressions", "clicks", "orders", "units", "stock"):
+            for value in (True, 1.5, float("nan"), float("inf")):
+                with self.subTest(field=field, value=value):
+                    with self.assertRaisesRegex(ValueError, "integer"):
+                        GrowthAgent().run([row(**{field: value})])
 
 
 if __name__ == "__main__":

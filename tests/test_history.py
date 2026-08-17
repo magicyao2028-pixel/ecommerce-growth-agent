@@ -124,6 +124,24 @@ class AnalysisHistoryTests(unittest.TestCase):
         self.assertEqual(second["status"], "stored")
         self.assertEqual(len(payload["records"]), 2)
 
+    def test_same_second_distinct_analyses_receive_distinct_run_ids(self):
+        rows = [sales_row()]
+        fingerprint = fingerprint_rows(rows)
+        now = datetime(2026, 8, 17, tzinfo=timezone.utc)
+        with TemporaryDirectory() as directory:
+            store = AnalysisHistoryStore(Path(directory) / "history.json")
+            first = store.append(GrowthAgent().run(rows), "store-a.csv", fingerprint, now)
+            second = store.append(
+                GrowthAgent(BusinessThresholds(low_ctr=0.01)).run(rows),
+                "store-a.csv",
+                fingerprint,
+                now,
+            )
+            third = store.append(GrowthAgent().run(rows), "store-b.csv", fingerprint, now)
+
+        self.assertEqual({first["status"], second["status"], third["status"]}, {"stored"})
+        self.assertEqual(len({first["record"]["run_id"], second["record"]["run_id"], third["record"]["run_id"]}), 3)
+
     def test_rejects_invalid_retention_policy(self):
         with self.assertRaisesRegex(ValueError, "max_records"):
             RetentionPolicy(max_records=0)
