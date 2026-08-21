@@ -8,7 +8,7 @@ Each round must add implementation or measurable validation evidence. Cosmetic-o
 | M2 | Reproducible evaluation fixture and rule coverage report | Complete |
 | M3 | Analysis history with a local persistence boundary | Complete |
 | M4 | Trial package, evidence index, external screening and feedback regression | Complete |
-| M5 | Evidence-constrained explanation adapter interface | Planned |
+| M5 | Evidence-constrained explanation adapter interface | Complete in v0.6.0 |
 | M6 | FastAPI service and contract tests | Planned |
 | M7 | Authentication and role model | Planned |
 | M8 | Audit events and action-approval state | Planned |

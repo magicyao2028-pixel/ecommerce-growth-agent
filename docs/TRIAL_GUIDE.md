@@ -12,10 +12,11 @@ python -m venv .venv
 # macOS/Linux: source .venv/bin/activate
 python -m pip install -e .
 growth-agent-trial
+growth-agent data/sample_sales.csv --explain --generated-at 2026-08-21T00:00:00+00:00 --output examples/sample_report_with_explanation.json
 python -m unittest discover -s tests -v
 ```
 
-The trial command validates the machine-readable evidence index, screens the recorded external candidates, runs the synthetic CSV flow, verifies that all recommendations require human approval, exercises an invalid-funnel failure, and replays the synthetic duplicate-history feedback case.
+The trial command validates the machine-readable evidence index, screens the recorded external candidates, runs the synthetic CSV flow, verifies that all recommendations require human approval, exercises an invalid-funnel failure, replays the synthetic duplicate-history feedback case, and checks both the explanation success path and an unsafe-adapter fallback.
 
 ## Expected result
 
@@ -24,12 +25,14 @@ The trial command validates the machine-readable evidence index, screens the rec
 - an impossible funnel row is rejected;
 - an identical data-and-guardrail retry returns `duplicate_skipped`, while changed guardrails remain a distinct analysis;
 - no external write or paid service is used.
+- explanation items cite source findings, the adapter receives no source rows, and unsafe output falls back locally.
 
 ## Recovery
 
 - `ModuleNotFoundError`: activate the environment and rerun `python -m pip install -e .`.
 - Missing evidence path: restore the referenced tracked file; do not edit the evidence index to hide a missing artifact.
 - Changed diagnostic output: run the full tests and review guardrail changes before updating expected evidence.
+- Explanation fallback: inspect `fallback_reason`; repair citations or remove unsupported numbers/action language rather than disabling validation.
 
 ## Do not adopt when
 

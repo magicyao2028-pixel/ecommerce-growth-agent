@@ -29,6 +29,14 @@
     "changed_guardrail_status": "stored",
     "stored_records": 2
   },
+  "explanation_boundary": {
+    "passed": true,
+    "items": 3,
+    "unsafe_probe_fallback": true,
+    "unsafe_probe_reason": "ValueError: explanation requests an unapproved external action",
+    "source_rows_shared": false,
+    "external_actions": 0
+  },
   "external_intake": [
     {
       "repository": "https://github.com/pydantic/pydantic",
@@ -95,6 +103,15 @@
       "artifact_paths": [
         "docs/TRIAL_GUIDE.md",
         "docs/SECURITY.md"
+      ],
+      "passed": true
+    },
+    {
+      "claim_id": "ECOM-EXPLAIN-001",
+      "artifact_paths": [
+        "src/ecommerce_growth_agent/explanation.py",
+        "tests/test_explanation.py",
+        "examples/sample_report_with_explanation.json"
       ],
       "passed": true
     }

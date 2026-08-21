@@ -29,7 +29,12 @@ class GrowthAgent:
     def __init__(self, thresholds: BusinessThresholds | None = None) -> None:
         self.thresholds = thresholds or BusinessThresholds()
 
-    def run(self, values: Iterable[SalesRow | dict[str, Any]]) -> dict[str, Any]:
+    def run(
+        self,
+        values: Iterable[SalesRow | dict[str, Any]],
+        *,
+        generated_at: str | None = None,
+    ) -> dict[str, Any]:
         trace = AgentTrace()
         rows = [value if isinstance(value, SalesRow) else SalesRow.from_mapping(value) for value in values]
         if not rows:
@@ -48,8 +53,9 @@ class GrowthAgent:
         recommendations = build_recommendations(findings)
         trace.record("build_recommendations", "Prioritize actions and assign a responsible function.")
 
+        timestamp = _generated_at(generated_at)
         return {
-            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "generated_at": timestamp,
             "data_freshness": data_freshness(rows),
             "summary": summary,
             "guardrails": self.thresholds.to_dict(),
@@ -63,3 +69,15 @@ class GrowthAgent:
                 "Recommendations are advisory and require human approval.",
             ],
         }
+
+
+def _generated_at(value: str | None) -> str:
+    if value is None:
+        return datetime.now(timezone.utc).isoformat()
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError as exc:
+        raise ValueError("generated_at must be an ISO-8601 timestamp") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("generated_at must include a timezone offset")
+    return parsed.isoformat()

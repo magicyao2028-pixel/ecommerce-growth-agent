@@ -74,6 +74,15 @@
         {"kind": "trial_guide", "path": "docs/TRIAL_GUIDE.md"},
         {"kind": "security", "path": "docs/SECURITY.md"}
       ]
+    },
+    {
+      "claim_id": "ECOM-EXPLAIN-001",
+      "statement": "The optional explanation adapter receives only structured report evidence, validates citations and numbers, and falls back deterministically on unsafe or invalid output.",
+      "artifacts": [
+        {"kind": "implementation", "path": "src/ecommerce_growth_agent/explanation.py"},
+        {"kind": "tests", "path": "tests/test_explanation.py"},
+        {"kind": "example", "path": "examples/sample_report_with_explanation.json"}
+      ]
     }
   ],
   "boundaries": [

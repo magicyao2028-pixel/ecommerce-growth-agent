@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0 - 2026-08-21
+
+- Added an optional evidence-constrained explanation adapter interface.
+- Limited adapter context to structured summary, findings and deterministic recommendations; source rows and SKU metric tables are excluded.
+- Required known finding and recommendation references and preserved exact source evidence in every output item.
+- Blocked unsupported numeric claims and automatic-action language.
+- Added deterministic fallback for malformed output, unknown references, unsafe content and adapter exceptions.
+- Extended the offline trial, evidence index, documentation and regression suite for the M5 boundary.
+
 ## 0.5.0 - 2026-08-17
 
 - Added an executable reviewer trial and machine-readable evidence index.

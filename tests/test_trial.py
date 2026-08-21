@@ -25,6 +25,9 @@ class TrialReadinessTests(unittest.TestCase):
         self.assertEqual(report["feedback_regression"]["changed_guardrail_status"], "stored")
         self.assertEqual(report["feedback_regression"]["stored_records"], 2)
         self.assertTrue(report["failure_path"]["passed"])
+        self.assertTrue(report["explanation_boundary"]["passed"])
+        self.assertTrue(report["explanation_boundary"]["unsafe_probe_fallback"])
+        self.assertEqual(report["explanation_boundary"]["external_actions"], 0)
 
     def test_evidence_index_links_real_files(self):
         payload = load_json_object(ROOT / "evidence" / "evidence_index.json")

@@ -49,6 +49,12 @@ class GrowthAgentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "At least one sales row"):
             GrowthAgent().run([])
 
+    def test_accepts_reproducible_timestamp_and_rejects_naive_timestamp(self):
+        report = GrowthAgent().run([row()], generated_at="2026-08-21T09:00:00+08:00")
+        self.assertEqual(report["generated_at"], "2026-08-21T09:00:00+08:00")
+        with self.assertRaisesRegex(ValueError, "timezone offset"):
+            GrowthAgent().run([row()], generated_at="2026-08-21T09:00:00")
+
     def test_custom_threshold_changes_diagnosis_and_is_reported(self):
         data = [row(impressions=1000, clicks=15, orders=3, revenue=500, ad_spend=100, stock=100)]
         default_codes = {finding["code"] for finding in GrowthAgent().run(data)["findings"]}

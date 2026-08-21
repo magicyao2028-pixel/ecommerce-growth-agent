@@ -17,6 +17,7 @@
         <a href="#findings">Diagnostics</a>
         <a href="#actions">Action plan</a>
         <a href="#history">Local history</a>
+        <a href="#explanation">Explanation boundary</a>
         <a href="#trial">Reviewer trial</a>
         <a href="#trace">Agent trace</a>
       </nav>
@@ -104,8 +105,18 @@
         <ol class="trace-list" id="trace-list"><li>Waiting for a dataset.</li></ol>
       </section>
 
+      <section id="explanation" aria-labelledby="explanation-title">
+        <div class="section-heading"><div><p class="eyebrow">EVIDENCE-CONSTRAINED M5</p><h2 id="explanation-title">Optional explanation adapter</h2></div><span class="status">Deterministic fallback</span></div>
+        <div class="history-grid">
+          <article class="history-card"><span>Adapter input</span><strong>Structured findings only</strong><small>No uploaded source rows or SKU metric table is shared with the adapter.</small></article>
+          <article class="history-card"><span>Grounding gate</span><strong>Known citations + numbers</strong><small>Every item cites finding and recommendation references; new numeric claims are blocked.</small></article>
+          <article class="history-card excluded"><span>Failure behavior</span><strong>Fall back, never act</strong><small>Malformed, unsafe or failed output returns an offline explanation and executes zero commercial actions.</small></article>
+        </div>
+        <p class="form-note">No paid model is bundled. This interface demonstrates a controlled integration boundary, not proof that arbitrary model text is always factual.</p>
+      </section>
+
       <section id="trial" aria-labelledby="trial-title">
-        <div class="section-heading"><div><p class="eyebrow">TRIAL READINESS M4</p><h2 id="trial-title">20-minute reviewer path</h2></div><span class="status">Offline · Synthetic</span></div>
+        <div class="section-heading"><div><p class="eyebrow">TRIAL READINESS M5</p><h2 id="trial-title">20-minute reviewer path</h2></div><span class="status">Offline · Synthetic</span></div>
         <div class="history-grid">
           <article class="history-card"><span>Runnable proof</span><strong>Core + failure path</strong><small>One command validates the sample flow and impossible-funnel rejection.</small></article>
           <article class="history-card"><span>Feedback loop</span><strong>Duplicate retry regression</strong><small>Synthetic defect, accepted change, idempotent write and test evidence.</small></article>
@@ -114,7 +125,7 @@
         <p class="form-note">See the repository trial guide and machine-readable evidence index. This is not a production deployment or adoption claim.</p>
       </section>
 
-      <footer>v0.5 trial-readiness prototype · Synthetic sample data · Bounded local history · No paid API</footer>
+      <footer>v0.6 evidence-constrained explanation prototype · Synthetic sample data · Deterministic fallback · No paid API</footer>
     </main>
   </div>
   <script src="app.js"></script>

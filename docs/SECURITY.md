@@ -9,6 +9,9 @@
 - the product never executes external commercial actions.
 - optional history persists only summary fields and a data fingerprint, never uploaded source rows;
 - local history defaults to 90 days and 20 records, with pruning on append.
+- explanation adapters receive no uploaded source rows or SKU metric table;
+- explanation output must cite known findings and recommendations, reuse only cited numbers, and preserve human approval;
+- malformed, unsafe or failed adapter output triggers the deterministic offline fallback.
 
 ## Production threat areas
 
@@ -49,3 +52,5 @@
 Before production, require a documented architecture review, data classification, access-control test, secret scan, dependency scan, backup-and-restore test and incident response owner.
 
 The current local JSON history is not encrypted, authenticated or tamper-evident. Operators must store it in an access-controlled location and delete it when the analysis purpose ends.
+
+The explanation validator is a bounded application control, not a general hallucination detector. Production use still needs provider evaluation, prompt-injection tests, logging, red-team cases and accountable human review.

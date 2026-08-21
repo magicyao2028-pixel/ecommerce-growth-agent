@@ -1,0 +1,295 @@
+{
+  "generated_at": "2026-08-21T00:00:00+00:00",
+  "data_freshness": "Dataset range: 2026-07-01 to 2026-07-02.",
+  "summary": {
+    "row_count": 8,
+    "sku_count": 4,
+    "gmv": 15103.0,
+    "orders": 148,
+    "units": 165,
+    "ctr": 0.0246,
+    "conversion_rate": 0.0667,
+    "ad_roi": 3.85,
+    "contribution_profit": 3943.0,
+    "contribution_margin": 0.2611
+  },
+  "guardrails": {
+    "low_ctr": 0.02,
+    "low_conversion_rate": 0.03,
+    "low_ad_roi": 1.5,
+    "stockout_cover_days": 7.0,
+    "overstock_cover_days": 60.0
+  },
+  "sku_metrics": [
+    {
+      "sku": "TEA-001",
+      "product_name": "Jasmine Tea Gift Box",
+      "category": "Tea",
+      "impressions": 24800,
+      "clicks": 615,
+      "orders": 44,
+      "units": 48,
+      "revenue": 7200.0,
+      "ad_spend": 1670.0,
+      "ctr": 0.0248,
+      "conversion_rate": 0.0715,
+      "ad_roi": 4.31,
+      "contribution_profit": 2300.0,
+      "stock": 52,
+      "stock_cover_days": 2.2
+    },
+    {
+      "sku": "SAUCE-003",
+      "product_name": "Chili Sauce Trio",
+      "category": "Food",
+      "impressions": 19700,
+      "clicks": 790,
+      "orders": 72,
+      "units": 82,
+      "revenue": 4838.0,
+      "ad_spend": 860.0,
+      "ctr": 0.0401,
+      "conversion_rate": 0.0911,
+      "ad_roi": 5.63,
+      "contribution_profit": 1518.0,
+      "stock": 18,
+      "stock_cover_days": 0.4
+    },
+    {
+      "sku": "COFFEE-004",
+      "product_name": "Drip Coffee Set",
+      "category": "Beverage",
+      "impressions": 10300,
+      "clicks": 330,
+      "orders": 23,
+      "units": 25,
+      "revenue": 2475.0,
+      "ad_spend": 790.0,
+      "ctr": 0.032,
+      "conversion_rate": 0.0697,
+      "ad_roi": 3.13,
+      "contribution_profit": 495.0,
+      "stock": 88,
+      "stock_cover_days": 7.0
+    },
+    {
+      "sku": "FRUIT-002",
+      "product_name": "Dried Mango Pack",
+      "category": "Snacks",
+      "impressions": 35500,
+      "clicks": 485,
+      "orders": 9,
+      "units": 10,
+      "revenue": 590.0,
+      "ad_spend": 605.0,
+      "ctr": 0.0137,
+      "conversion_rate": 0.0186,
+      "ad_roi": 0.98,
+      "contribution_profit": -370.0,
+      "stock": 430,
+      "stock_cover_days": 86.0
+    }
+  ],
+  "findings": [
+    {
+      "sku": "FRUIT-002",
+      "product_name": "Dried Mango Pack",
+      "severity": "critical",
+      "code": "NEGATIVE_CONTRIBUTION",
+      "evidence": "Contribution profit is -370.00 after product and advertising cost.",
+      "recommended_action": "Check pricing, discount, sourcing cost and paid traffic before accepting more volume."
+    },
+    {
+      "sku": "FRUIT-002",
+      "product_name": "Dried Mango Pack",
+      "severity": "high",
+      "code": "LOW_AD_ROI",
+      "evidence": "Advertising ROI is 0.98, below the 1.50 guardrail.",
+      "recommended_action": "Reduce or pause low-performing spend after human review; test a new audience or creative."
+    },
+    {
+      "sku": "FRUIT-002",
+      "product_name": "Dried Mango Pack",
+      "severity": "high",
+      "code": "LOW_CONVERSION",
+      "evidence": "Click-to-order conversion is 1.9%, below the 3.0% threshold.",
+      "recommended_action": "Audit product page, price, reviews, offer and checkout friction."
+    },
+    {
+      "sku": "SAUCE-003",
+      "product_name": "Chili Sauce Trio",
+      "severity": "high",
+      "code": "STOCKOUT_RISK",
+      "evidence": "Estimated stock cover is 0.4 days.",
+      "recommended_action": "Confirm demand forecast and replenishment lead time; prepare a controlled reorder."
+    },
+    {
+      "sku": "TEA-001",
+      "product_name": "Jasmine Tea Gift Box",
+      "severity": "high",
+      "code": "STOCKOUT_RISK",
+      "evidence": "Estimated stock cover is 2.2 days.",
+      "recommended_action": "Confirm demand forecast and replenishment lead time; prepare a controlled reorder."
+    },
+    {
+      "sku": "FRUIT-002",
+      "product_name": "Dried Mango Pack",
+      "severity": "medium",
+      "code": "LOW_CTR",
+      "evidence": "CTR is 1.4%, below the 2.0% review threshold.",
+      "recommended_action": "Review creative, title and audience targeting before increasing traffic spend."
+    },
+    {
+      "sku": "FRUIT-002",
+      "product_name": "Dried Mango Pack",
+      "severity": "medium",
+      "code": "OVERSTOCK_RISK",
+      "evidence": "Estimated stock cover is 86.0 days.",
+      "recommended_action": "Slow procurement and test a bundle, content or promotion plan without destroying margin."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": 1,
+      "owner": "Business Owner",
+      "sku": "FRUIT-002",
+      "action": "Check pricing, discount, sourcing cost and paid traffic before accepting more volume.",
+      "reason": "Contribution profit is -370.00 after product and advertising cost.",
+      "approval": "Human approval required before any external action."
+    },
+    {
+      "priority": 2,
+      "owner": "Growth / Advertising",
+      "sku": "FRUIT-002",
+      "action": "Reduce or pause low-performing spend after human review; test a new audience or creative.",
+      "reason": "Advertising ROI is 0.98, below the 1.50 guardrail.",
+      "approval": "Human approval required before any external action."
+    },
+    {
+      "priority": 3,
+      "owner": "Product Operations",
+      "sku": "FRUIT-002",
+      "action": "Audit product page, price, reviews, offer and checkout friction.",
+      "reason": "Click-to-order conversion is 1.9%, below the 3.0% threshold.",
+      "approval": "Human approval required before any external action."
+    },
+    {
+      "priority": 4,
+      "owner": "Supply Chain",
+      "sku": "SAUCE-003",
+      "action": "Confirm demand forecast and replenishment lead time; prepare a controlled reorder.",
+      "reason": "Estimated stock cover is 0.4 days.",
+      "approval": "Human approval required before any external action."
+    },
+    {
+      "priority": 5,
+      "owner": "Supply Chain",
+      "sku": "TEA-001",
+      "action": "Confirm demand forecast and replenishment lead time; prepare a controlled reorder.",
+      "reason": "Estimated stock cover is 2.2 days.",
+      "approval": "Human approval required before any external action."
+    },
+    {
+      "priority": 6,
+      "owner": "Growth / Advertising",
+      "sku": "FRUIT-002",
+      "action": "Review creative, title and audience targeting before increasing traffic spend.",
+      "reason": "CTR is 1.4%, below the 2.0% review threshold.",
+      "approval": "Human approval required before any external action."
+    },
+    {
+      "priority": 7,
+      "owner": "Supply Chain",
+      "sku": "FRUIT-002",
+      "action": "Slow procurement and test a bundle, content or promotion plan without destroying margin.",
+      "reason": "Estimated stock cover is 86.0 days.",
+      "approval": "Human approval required before any external action."
+    }
+  ],
+  "trace": [
+    {
+      "tool": "validate_input",
+      "purpose": "Validate schema, values and basic business invariants.",
+      "status": "completed"
+    },
+    {
+      "tool": "compute_portfolio_metrics",
+      "purpose": "Calculate portfolio KPIs from source rows.",
+      "status": "completed"
+    },
+    {
+      "tool": "aggregate_by_sku",
+      "purpose": "Aggregate traffic, sales, advertising and stock by SKU.",
+      "status": "completed"
+    },
+    {
+      "tool": "diagnose_skus",
+      "purpose": "Apply explicit business guardrails and preserve evidence.",
+      "status": "completed"
+    },
+    {
+      "tool": "build_recommendations",
+      "purpose": "Prioritize actions and assign a responsible function.",
+      "status": "completed"
+    }
+  ],
+  "limitations": [
+    "Configured thresholds are product hypotheses and require validation for each business.",
+    "Stock cover uses observed units per active date and is not a full demand forecast.",
+    "Recommendations are advisory and require human approval."
+  ],
+  "explanation": {
+    "headline": "Priority operating findings for human review",
+    "items": [
+      {
+        "text": "Contribution profit is -370.00 after product and advertising cost.",
+        "finding_refs": [
+          "FIND-001"
+        ],
+        "recommendation_ref": "REC-001",
+        "source_evidence": [
+          "Contribution profit is -370.00 after product and advertising cost."
+        ],
+        "recommended_action": "Check pricing, discount, sourcing cost and paid traffic before accepting more volume.",
+        "owner": "Business Owner",
+        "approval": "Human approval required before any external action."
+      },
+      {
+        "text": "Advertising ROI is 0.98, below the 1.50 guardrail.",
+        "finding_refs": [
+          "FIND-002"
+        ],
+        "recommendation_ref": "REC-002",
+        "source_evidence": [
+          "Advertising ROI is 0.98, below the 1.50 guardrail."
+        ],
+        "recommended_action": "Reduce or pause low-performing spend after human review; test a new audience or creative.",
+        "owner": "Growth / Advertising",
+        "approval": "Human approval required before any external action."
+      },
+      {
+        "text": "Click-to-order conversion is 1.9%, below the 3.0% threshold.",
+        "finding_refs": [
+          "FIND-003"
+        ],
+        "recommendation_ref": "REC-003",
+        "source_evidence": [
+          "Click-to-order conversion is 1.9%, below the 3.0% threshold."
+        ],
+        "recommended_action": "Audit product page, price, reviews, offer and checkout friction.",
+        "owner": "Product Operations",
+        "approval": "Human approval required before any external action."
+      }
+    ],
+    "governance": {
+      "requested_adapter": "deterministic-evidence-v1",
+      "used_adapter": "deterministic-evidence-v1",
+      "fallback_triggered": false,
+      "fallback_reason": null,
+      "source_rows_shared_with_adapter": false,
+      "metrics_recalculated_by_adapter": false,
+      "external_action_executed": false,
+      "human_approval_required": true
+    }
+  }
+}

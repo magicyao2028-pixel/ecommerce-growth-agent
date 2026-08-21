@@ -6,7 +6,8 @@
 - Core flow: PASS
 - Invalid funnel rejection: PASS
 - Configuration-aware retry regression: PASS
-- Evidence claims checked: 7
+- Explanation adapter boundary and fallback: PASS
+- Evidence claims checked: 8
 - External candidates screened: 2
 
 ## Pilot boundary

@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Product | E-commerce Growth Agent |
-| Version | 0.4 |
+| Version | 0.6 |
 | Status | Product-validation MVP |
 | Primary user | Owner or operations lead in a small e-commerce team |
 | Data policy | Synthetic data in the public edition |
@@ -49,6 +49,7 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 7. Record an agent execution trace.
 8. Require human approval before any external business action.
 9. Optionally retain a bounded, data-minimized local analysis history.
+10. Optionally produce an evidence-constrained explanation from the structured report.
 
 ### Out of scope
 
@@ -73,6 +74,8 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 | FR-08 | Configure thresholds | Must | User can load validated guardrails and the report preserves their effective values. |
 | FR-09 | Retain safe history | Should | Optional history stores summaries and fingerprints but excludes source rows. |
 | FR-10 | Enforce retention | Must | Age and record-count limits are applied whenever history is appended. |
+| FR-11 | Constrain explanations | Must | Every explanation item cites declared finding and recommendation references and preserves source evidence. |
+| FR-12 | Fall back safely | Must | Unknown citations, unsupported numbers, unsafe action language, malformed output, or adapter failure returns a deterministic explanation. |
 
 ## 7. Non-functional requirements
 
@@ -81,7 +84,7 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 - **Cost:** the MVP must run without a paid model API.
 - **Performance:** a 10,000-row CSV should complete within five seconds on a normal laptop in a future benchmark.
 - **Reliability:** calculation rules must be covered by automated tests.
-- **Safety:** the product must not execute external commercial actions in v0.1.
+- **Safety:** the product must not execute external commercial actions; explanation adapters receive no source rows and cannot recalculate metrics.
 
 ## 8. Core user flow
 
@@ -132,6 +135,7 @@ This hypothesis has not yet been validated with a controlled user pilot. The pub
 - **v0.2:** threshold configuration in the CLI and static prototype;
 - **v0.3:** reproducible synthetic evaluation fixture and rule-coverage report;
 - **v0.4:** bounded local analysis history and retention controls;
-- **v0.5:** evidence-constrained explanation layer;
-- **v0.6:** API, permissions, audit logs and controlled integrations;
+- **v0.5:** reviewer trial and evidence package;
+- **v0.6:** evidence-constrained explanation adapter with deterministic fallback;
+- **v0.7:** API, permissions, audit logs and controlled integrations;
 - **v1.0:** measured pilot and production-readiness review.

@@ -11,11 +11,26 @@ from typing import Any
 from .agent import GrowthAgent
 from .config import BusinessThresholds
 from .history import AnalysisHistoryStore, fingerprint_rows
+from .explanation import explain_report
 
 
 FEEDBACK_CLASSES = {"defect", "requirement", "usability", "performance", "safety", "documentation"}
 SOURCE_TYPES = {"real", "synthetic"}
 COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")
+
+
+class UnsafeExplanationProbe:
+    name = "synthetic-unsafe-probe"
+
+    def explain(self, context: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "headline": "Synthetic safety probe",
+            "items": [{
+                "text": "Automatically pause the campaign and promise 99% growth.",
+                "finding_refs": ["FIND-001"],
+                "recommendation_ref": "REC-001",
+            }],
+        }
 
 
 def load_json_object(path: Path) -> dict[str, Any]:
@@ -131,6 +146,24 @@ def run_trial(root: Path) -> dict[str, Any]:
         and actual_codes == sorted(expected["finding_codes"])
         and all(item["approval"] == "Human approval required before any external action." for item in core_report["recommendations"])
     )
+    explanation = explain_report(core_report)
+    unsafe_explanation = explain_report(core_report, UnsafeExplanationProbe())
+    explanation_check = {
+        "passed": (
+            explanation["governance"]["fallback_triggered"] is False
+            and explanation["governance"]["source_rows_shared_with_adapter"] is False
+            and explanation["governance"]["metrics_recalculated_by_adapter"] is False
+            and explanation["governance"]["external_action_executed"] is False
+            and all(item["source_evidence"] for item in explanation["items"])
+            and unsafe_explanation["governance"]["fallback_triggered"] is True
+            and unsafe_explanation["governance"]["used_adapter"] == "deterministic-evidence-v1"
+        ),
+        "items": len(explanation["items"]),
+        "unsafe_probe_fallback": unsafe_explanation["governance"]["fallback_triggered"],
+        "unsafe_probe_reason": unsafe_explanation["governance"]["fallback_reason"],
+        "source_rows_shared": explanation["governance"]["source_rows_shared_with_adapter"],
+        "external_actions": 0,
+    }
 
     invalid = dict(rows[0])
     invalid["clicks"] = int(invalid["impressions"]) + 1
@@ -172,6 +205,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         core_passed,
         failure_check["passed"],
         feedback_runtime["passed"],
+        explanation_check["passed"],
         all(item["passed"] for item in evidence_checks),
         all(item["passed"] for item in external_checks),
         feedback_check["passed"],
@@ -189,6 +223,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         },
         "failure_path": failure_check,
         "feedback_regression": {**feedback_check, **feedback_runtime},
+        "explanation_boundary": explanation_check,
         "external_intake": external_checks,
         "evidence_index": evidence_checks,
         "boundaries": manifest["boundaries"],
@@ -205,6 +240,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- Core flow: {'PASS' if report['core_flow']['passed'] else 'FAIL'}",
         f"- Invalid funnel rejection: {'PASS' if report['failure_path']['passed'] else 'FAIL'}",
         f"- Configuration-aware retry regression: {'PASS' if report['feedback_regression']['passed'] else 'FAIL'}",
+        f"- Explanation adapter boundary and fallback: {'PASS' if report['explanation_boundary']['passed'] else 'FAIL'}",
         f"- Evidence claims checked: {len(report['evidence_index'])}",
         f"- External candidates screened: {len(report['external_intake'])}",
         "",

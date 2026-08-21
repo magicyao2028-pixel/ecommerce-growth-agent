@@ -22,6 +22,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 - keeps a bounded local history of safe analysis summaries without source rows;
 - works offline and does not require a paid model API.
 - provides a 10–20 minute reviewer trial with a machine-readable evidence chain and a feedback regression replay.
+- can add an evidence-constrained explanation while keeping calculations deterministic and external actions human-owned.
 
 ## What this repository demonstrates
 
@@ -37,6 +38,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 | Security thinking | Offline-first design, synthetic data and human approval boundaries |
 | User-facing prototype | Zero-cost static web application in [`site/`](site/) |
 | Trial readiness | [Reviewer trial](docs/TRIAL_GUIDE.md), [evidence index](evidence/evidence_index.json), external-intake decision and synthetic feedback regression |
+| Explanation safety | Structured adapter context, finding citations, unsupported-number checks and deterministic fallback |
 
 ## Architecture
 
@@ -65,6 +67,7 @@ python -m pip install -e .
 growth-agent data/sample_sales.csv --output report.json
 growth-agent data/sample_sales.csv --config config/business_thresholds.json --output report.json
 growth-agent data/sample_sales.csv --history output/analysis_history.json --history-retain-days 90 --history-max-records 20
+growth-agent data/sample_sales.csv --explain --generated-at 2026-08-21T00:00:00+00:00 --output examples/sample_report_with_explanation.json
 growth-agent-trial
 python -m unittest discover -s tests -v
 ```
@@ -96,6 +99,7 @@ The agent returns:
 - prioritized operational recommendations;
 - a transparent execution trace;
 - warnings when data or assumptions are incomplete.
+- when `--explain` is requested, grounded explanation items with source evidence, owner, approval boundary and adapter/fallback metadata.
 
 ## Local analysis history
 
@@ -130,8 +134,8 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 - v0.2: configurable business guardrails in the CLI and static prototype;
 - v0.3: reproducible synthetic evaluation fixture and six-rule coverage report;
 - v0.4: bounded local analysis history with explicit data-retention boundaries;
-- v0.5: reviewer trial, evidence index, governed external screening and feedback regression (current);
-- v0.6: optional model-generated explanation with evidence constraints;
+- v0.5: reviewer trial, evidence index, governed external screening and feedback regression;
+- v0.6: evidence-constrained explanation adapter with deterministic fallback (current);
 - v0.7: FastAPI service, role-based access and audit logs;
 - v1.0: controlled pilot with real users and measured operational outcomes.
 

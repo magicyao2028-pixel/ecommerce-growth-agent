@@ -25,6 +25,7 @@ flowchart TB
       T5[Recommendation tool]
       CFG[Validated business guardrails]
       H[Bounded history store]
+      E[Evidence-constrained explanation adapter]
     end
     subgraph Data
       CSV[CSV input]
@@ -38,6 +39,7 @@ flowchart TB
     C --> A
     A --> T1 --> T2 --> T3 --> T4 --> T5
     A --> JSON
+    JSON --> E
     JSON --> H --> HIST
 ```
 
@@ -53,6 +55,7 @@ The browser prototype mirrors the Python domain logic for a zero-setup demonstra
 | `agent.py` | Select tools in a controlled sequence and preserve a trace. |
 | `cli.py` | Provide a local execution interface and JSON export. |
 | `history.py` | Fingerprint source data and persist only bounded, data-minimized summary records. |
+| `explanation.py` | Build a row-free adapter context, validate citations/numbers/actions and provide deterministic fallback. |
 | `site/` | Demonstrate the product experience without a server. |
 
 ## Future service architecture
@@ -80,21 +83,23 @@ flowchart LR
 - model provider, budget and fallback;
 - audit logging and incident response.
 
-## Optional LLM boundary
+## Optional explanation adapter boundary
 
-A model may later:
+An optional adapter may:
 
 - rewrite structured findings into plain language;
 - answer questions using only the calculated report;
 - summarize approved actions.
 
-A model must not:
+An adapter must not:
 
 - calculate financial metrics when deterministic code is available;
 - invent missing data;
 - execute campaign, pricing or procurement actions without approval;
 - receive secrets or personal information in prompts.
 
+The v0.6 implementation gives an adapter only portfolio summary values plus normalized findings and deterministic recommendations. It validates finding and recommendation references, blocks new numeric claims that are absent from cited evidence, blocks automatic-action language, and falls back on an offline deterministic adapter after malformed output or an exception. This is a safety boundary, not proof that arbitrary model output is fully factual.
+
 ## Current local persistence boundary
 
-The v0.4 history store retains summary KPIs, finding codes, counts, the source filename and a SHA-256 data fingerprint. It excludes uploaded rows and order/customer-level details. Its default 90-day and 20-record limits are enforced on every append. The JSON file has no authentication, encryption or tamper evidence and is not presented as a production database.
+The local history store retains summary KPIs, finding codes, counts, the source filename and a SHA-256 data fingerprint. It excludes uploaded rows and order/customer-level details. Its default 90-day and 20-record limits are enforced on every append. The JSON file has no authentication, encryption or tamper evidence and is not presented as a production database.
