@@ -7,7 +7,7 @@
 - Invalid funnel rejection: PASS
 - Configuration-aware retry regression: PASS
 - Explanation adapter boundary and fallback: PASS
-- Evidence claims checked: 8
+- Evidence claims checked: 9
 - External candidates screened: 2
 
 ## Pilot boundary

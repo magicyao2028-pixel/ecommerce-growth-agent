@@ -83,6 +83,15 @@
         {"kind": "tests", "path": "tests/test_explanation.py"},
         {"kind": "example", "path": "examples/sample_report_with_explanation.json"}
       ]
+    },
+    {
+      "claim_id": "ECOM-SERVICE-001",
+      "statement": "A versioned service contract and optional FastAPI adapter validate requests while keeping persistence, external actions and human approval explicit.",
+      "artifacts": [
+        {"kind": "contract", "path": "src/ecommerce_growth_agent/service_contract.py"},
+        {"kind": "adapter", "path": "src/ecommerce_growth_agent/service.py"},
+        {"kind": "tests", "path": "tests/test_agent.py"}
+      ]
     }
   ],
   "boundaries": [

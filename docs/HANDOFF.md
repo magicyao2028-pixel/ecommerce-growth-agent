@@ -2,8 +2,8 @@
 
 ## Current state
 
-- Release: v0.6.0
-- Maintenance rounds completed: 5/10
+- Release: v0.7.0
+- Maintenance rounds completed: 6/10
 - Runtime: offline Python 3.10+, no third-party runtime dependencies
 - Public data: synthetic only
 - Paid model calls: none
@@ -27,6 +27,12 @@ python -m unittest discover -s tests -v
 - the adapter never recalculates metrics or executes an external action;
 - the trial includes both a successful explanation and a synthetic unsafe-output probe.
 
+## M6 evidence
+
+- added a versioned offline service contract with request validation, optional thresholds and explanation inclusion;
+- added an optional FastAPI adapter with `/health` and `/v1/analyze`, while keeping FastAPI/Uvicorn out of the default runtime dependencies;
+- contract tests prove malformed requests fail closed and valid responses keep persistence, external actions and human approval explicit.
+
 ## Next planned round
 
-M6 is a FastAPI service and contract-test boundary. It is not authorized by this handoff. Authentication, roles, shared persistence and production deployment remain later work.
+M7 should improve service observability or contract documentation without adding authentication claims, shared persistence or production deployment. Those remain later work.

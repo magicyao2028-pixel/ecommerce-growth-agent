@@ -23,6 +23,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 - works offline and does not require a paid model API.
 - provides a 10–20 minute reviewer trial with a machine-readable evidence chain and a feedback regression replay.
 - can add an evidence-constrained explanation while keeping calculations deterministic and external actions human-owned.
+- exposes a versioned offline service contract and an optional FastAPI adapter without making web dependencies mandatory.
 
 ## What this repository demonstrates
 
@@ -60,7 +61,7 @@ The current MVP is deliberately deterministic and offline. This makes every reco
 
 ## Quick start
 
-Requirements: Python 3.10 or later. No third-party runtime dependency is required.
+Requirements: Python 3.10 or later. No third-party runtime dependency is required. The optional HTTP boundary uses the free `service` extra.
 
 ```bash
 python -m pip install -e .
@@ -71,6 +72,15 @@ growth-agent data/sample_sales.csv --explain --generated-at 2026-08-21T00:00:00+
 growth-agent-trial
 python -m unittest discover -s tests -v
 ```
+
+Optional HTTP boundary:
+
+```bash
+python -m pip install -e ".[service]"
+uvicorn ecommerce_growth_agent.service:create_fastapi_app --factory --host 127.0.0.1 --port 8000
+```
+
+`GET /health` is a liveness check. `POST /v1/analyze` accepts `{ "rows": [...], "generated_at": "...", "include_explanation": true }` and returns the same deterministic report contract. Authentication, shared persistence and external actions are deliberately not implemented.
 
 To view the prototype locally, open `site/index.html` or serve the folder:
 
@@ -135,9 +145,9 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 - v0.3: reproducible synthetic evaluation fixture and six-rule coverage report;
 - v0.4: bounded local analysis history with explicit data-retention boundaries;
 - v0.5: reviewer trial, evidence index, governed external screening and feedback regression;
-- v0.6: evidence-constrained explanation adapter with deterministic fallback (current);
-- v0.7: FastAPI service, role-based access and audit logs;
-- v1.0: controlled pilot with real users and measured operational outcomes.
+- v0.6: evidence-constrained explanation adapter with deterministic fallback;
+- v0.7: versioned offline service contract and optional FastAPI adapter (current);
+- v1.0: controlled pilot with authenticated users, role checks and measured operational outcomes.
 
 ## License
 

@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from ecommerce_growth_agent import BusinessThresholds, GrowthAgent, load_thresholds
+from ecommerce_growth_agent import BusinessThresholds, GrowthAgent, analyze_request, load_thresholds
 
 
 def row(**overrides):
@@ -25,6 +25,21 @@ def row(**overrides):
 
 
 class GrowthAgentTests(unittest.TestCase):
+    def test_service_contract_returns_offline_report_without_writes(self):
+        result = analyze_request({"rows": [row()], "generated_at": "2026-08-25T09:00:00+08:00", "include_explanation": True})
+        self.assertEqual(result["schema_version"], "1.0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["report"]["generated_at"], "2026-08-25T09:00:00+08:00")
+        self.assertIn("explanation", result["report"])
+        self.assertFalse(result["governance"]["persistence_executed"])
+        self.assertFalse(result["governance"]["external_action_executed"])
+
+    def test_service_contract_rejects_empty_or_malformed_requests(self):
+        with self.assertRaisesRegex(ValueError, "non-empty list"):
+            analyze_request({"rows": []})
+        with self.assertRaisesRegex(ValueError, "include_explanation"):
+            analyze_request({"rows": [row()], "include_explanation": "yes"})
+
     def test_calculates_portfolio_metrics(self):
         report = GrowthAgent().run([row(), row(sku="SKU-002", revenue=300, ad_spend=50, cost=100)])
         self.assertEqual(report["summary"]["gmv"], 800.0)

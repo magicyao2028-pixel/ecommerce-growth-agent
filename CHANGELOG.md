@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0 - 2026-08-25
+
+- Added a versioned offline service contract for row validation, optional thresholds and explanation inclusion.
+- Added an optional FastAPI adapter with `/health` and `/v1/analyze`; FastAPI and Uvicorn remain optional extras rather than default runtime dependencies.
+- Added contract tests and explicit governance fields for authentication, persistence, external actions and human approval.
+- Preserved the deterministic analysis core, source-row minimization and zero-production-write boundary.
+
 ## 0.6.0 - 2026-08-21
 
 - Added an optional evidence-constrained explanation adapter interface.

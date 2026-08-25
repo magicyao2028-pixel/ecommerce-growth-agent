@@ -12,6 +12,9 @@ license = { text = "MIT" }
 authors = [{ name = "magicyao2028-pixel" }]
 dependencies = []
 
+[project.optional-dependencies]
+service = ["fastapi>=0.110", "uvicorn>=0.30"]
+
 [project.scripts]
 growth-agent = "ecommerce_growth_agent.cli:main"
 growth-agent-eval = "ecommerce_growth_agent.evaluation_cli:main"

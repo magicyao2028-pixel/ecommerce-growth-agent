@@ -114,6 +114,15 @@
         "examples/sample_report_with_explanation.json"
       ],
       "passed": true
+    },
+    {
+      "claim_id": "ECOM-SERVICE-001",
+      "artifact_paths": [
+        "src/ecommerce_growth_agent/service_contract.py",
+        "src/ecommerce_growth_agent/service.py",
+        "tests/test_agent.py"
+      ],
+      "passed": true
     }
   ],
   "boundaries": [
