@@ -5,6 +5,7 @@ from typing import Any
 from .agent import GrowthAgent
 from .config import BusinessThresholds
 from .explanation import explain_report
+from .request_receipt import build_request_receipt
 
 
 SERVICE_SCHEMA_VERSION = "1.0"
@@ -34,6 +35,11 @@ def analyze_request(payload: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": SERVICE_SCHEMA_VERSION,
         "status": "ok",
+        "request_receipt": build_request_receipt(
+            rows,
+            thresholds or BusinessThresholds(),
+            payload.get("include_explanation") is True,
+        ),
         "report": report,
         "governance": {
             "authentication_required": True,

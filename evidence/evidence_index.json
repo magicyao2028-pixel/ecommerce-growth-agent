@@ -92,6 +92,15 @@
         {"kind": "adapter", "path": "src/ecommerce_growth_agent/service.py"},
         {"kind": "tests", "path": "tests/test_agent.py"}
       ]
+    },
+    {
+      "claim_id": "ECOM-RECEIPT-001",
+      "statement": "The service boundary emits a deterministic retry receipt without persistence or distributed deduplication claims.",
+      "artifacts": [
+        {"kind": "implementation", "path": "src/ecommerce_growth_agent/request_receipt.py"},
+        {"kind": "trial", "path": "src/ecommerce_growth_agent/trial.py"},
+        {"kind": "tests", "path": "tests/test_trial.py"}
+      ]
     }
   ],
   "boundaries": [

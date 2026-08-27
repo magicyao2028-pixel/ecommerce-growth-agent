@@ -37,6 +37,13 @@
     "source_rows_shared": false,
     "external_actions": 0
   },
+  "service_receipt": {
+    "passed": true,
+    "request_fingerprint": "sha256:f007f4bc01a115e22a1b770441aacdff9ed1155dd9f6042acbcacccb401c7529",
+    "retry_same_fingerprint": true,
+    "persistence_executed": false,
+    "deduplication_executed": false
+  },
   "external_intake": [
     {
       "repository": "https://github.com/pydantic/pydantic",
@@ -121,6 +128,15 @@
         "src/ecommerce_growth_agent/service_contract.py",
         "src/ecommerce_growth_agent/service.py",
         "tests/test_agent.py"
+      ],
+      "passed": true
+    },
+    {
+      "claim_id": "ECOM-RECEIPT-001",
+      "artifact_paths": [
+        "src/ecommerce_growth_agent/request_receipt.py",
+        "src/ecommerce_growth_agent/trial.py",
+        "tests/test_trial.py"
       ],
       "passed": true
     }

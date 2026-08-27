@@ -2,9 +2,9 @@
 
 ## Current state
 
-- Release stage: v0.5 trial-readiness prototype.
-- Maintenance completed: M4/10.
-- Core capability: offline KPI analysis, SKU diagnosis, prioritized actions, configurable guardrails and bounded local summary history.
+- Release stage: v0.8 trial-readiness prototype.
+- Maintenance completed: M7/10.
+- Core capability: offline KPI analysis, SKU diagnosis, prioritized actions, configurable guardrails, bounded local summary history, a governed explanation boundary and a versioned service contract with deterministic retry receipts.
 - Public data: synthetic only.
 - Runtime cost: zero paid API dependency.
 
@@ -18,9 +18,15 @@ growth-agent-eval
 growth-agent-trial
 ```
 
+## Maintenance completed in M5-M7
+
+- M5: evidence-constrained explanation adapter with deterministic fallback.
+- M6: versioned offline service contract and optional FastAPI adapter.
+- M7: deterministic request receipt for retry tracing; timestamps are excluded from the fingerprint and no persistence or distributed deduplication is claimed.
+
 ## Next maintenance round
 
-M5 should add an evidence-constrained explanation-adapter interface while preserving deterministic calculations and keeping the no-model default.
+M8 should add a small, testable request-observability summary (latency/error fields supplied by the caller) while preserving the offline, no-write boundary.
 
 ## Known limitations
 
@@ -29,4 +35,5 @@ M5 should add an evidence-constrained explanation-adapter interface while preser
 - The seven-case evaluation fixture is engineered regression evidence, not real-world precision evidence.
 - Local history is single-user JSON, not a shared database or tamper-evident audit log.
 - Duplicate suppression uses source filename plus data and effective-guardrail fingerprints; it is local idempotency, not distributed job coordination.
-- There is no authentication, API service, or real user pilot.
+- The optional API adapter has no authentication, shared persistence, queue, or real user pilot.
+- Request receipts are deterministic trace metadata only; they do not coordinate retries across processes or instances.

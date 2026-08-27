@@ -12,6 +12,7 @@ from .agent import GrowthAgent
 from .config import BusinessThresholds
 from .history import AnalysisHistoryStore, fingerprint_rows
 from .explanation import explain_report
+from .service_contract import analyze_request
 
 
 FEEDBACK_CLASSES = {"defect", "requirement", "usability", "performance", "safety", "documentation"}
@@ -139,6 +140,26 @@ def run_trial(root: Path) -> dict[str, Any]:
     with sample_path.open("r", encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     core_report = GrowthAgent().run(rows)
+    service_payload = {
+        "rows": rows,
+        "generated_at": "2026-08-17T00:00:00+00:00",
+        "include_explanation": True,
+    }
+    service_first = analyze_request(service_payload)
+    service_retry = analyze_request({**service_payload, "generated_at": "2026-08-18T00:00:00+00:00"})
+    service_receipt_check = {
+        "passed": (
+            service_first["request_receipt"] == service_retry["request_receipt"]
+            and service_first["request_receipt"]["retry_safe"] is True
+            and service_first["request_receipt"]["persistence_executed"] is False
+            and service_first["request_receipt"]["deduplication_executed"] is False
+            and service_first["governance"]["external_action_executed"] is False
+        ),
+        "request_fingerprint": service_first["request_receipt"]["request_fingerprint"],
+        "retry_same_fingerprint": service_first["request_receipt"] == service_retry["request_receipt"],
+        "persistence_executed": service_first["request_receipt"]["persistence_executed"],
+        "deduplication_executed": service_first["request_receipt"]["deduplication_executed"],
+    }
     actual_codes = sorted({item["code"] for item in core_report["findings"]})
     expected = manifest["trial"]["expected"]
     core_passed = (
@@ -206,6 +227,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         failure_check["passed"],
         feedback_runtime["passed"],
         explanation_check["passed"],
+        service_receipt_check["passed"],
         all(item["passed"] for item in evidence_checks),
         all(item["passed"] for item in external_checks),
         feedback_check["passed"],
@@ -224,6 +246,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         "failure_path": failure_check,
         "feedback_regression": {**feedback_check, **feedback_runtime},
         "explanation_boundary": explanation_check,
+        "service_receipt": service_receipt_check,
         "external_intake": external_checks,
         "evidence_index": evidence_checks,
         "boundaries": manifest["boundaries"],
@@ -241,6 +264,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- Invalid funnel rejection: {'PASS' if report['failure_path']['passed'] else 'FAIL'}",
         f"- Configuration-aware retry regression: {'PASS' if report['feedback_regression']['passed'] else 'FAIL'}",
         f"- Explanation adapter boundary and fallback: {'PASS' if report['explanation_boundary']['passed'] else 'FAIL'}",
+        f"- Service retry receipt and no-write boundary: {'PASS' if report['service_receipt']['passed'] else 'FAIL'}",
         f"- Evidence claims checked: {len(report['evidence_index'])}",
         f"- External candidates screened: {len(report['external_intake'])}",
         "",

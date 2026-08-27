@@ -28,6 +28,9 @@ class TrialReadinessTests(unittest.TestCase):
         self.assertTrue(report["explanation_boundary"]["passed"])
         self.assertTrue(report["explanation_boundary"]["unsafe_probe_fallback"])
         self.assertEqual(report["explanation_boundary"]["external_actions"], 0)
+        self.assertTrue(report["service_receipt"]["passed"])
+        self.assertTrue(report["service_receipt"]["retry_same_fingerprint"])
+        self.assertFalse(report["service_receipt"]["persistence_executed"])
 
     def test_evidence_index_links_real_files(self):
         payload = load_json_object(ROOT / "evidence" / "evidence_index.json")

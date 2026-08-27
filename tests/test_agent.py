@@ -26,13 +26,21 @@ def row(**overrides):
 
 class GrowthAgentTests(unittest.TestCase):
     def test_service_contract_returns_offline_report_without_writes(self):
-        result = analyze_request({"rows": [row()], "generated_at": "2026-08-25T09:00:00+08:00", "include_explanation": True})
+        payload = {"rows": [row()], "generated_at": "2026-08-25T09:00:00+08:00", "include_explanation": True}
+        result = analyze_request(payload)
         self.assertEqual(result["schema_version"], "1.0")
         self.assertEqual(result["status"], "ok")
         self.assertEqual(result["report"]["generated_at"], "2026-08-25T09:00:00+08:00")
         self.assertIn("explanation", result["report"])
         self.assertFalse(result["governance"]["persistence_executed"])
         self.assertFalse(result["governance"]["external_action_executed"])
+        self.assertTrue(result["request_receipt"]["retry_safe"])
+        self.assertEqual(result["request_receipt"], analyze_request({**payload, "generated_at": "2026-08-26T09:00:00+08:00"})["request_receipt"])
+
+    def test_service_receipt_changes_when_business_input_changes(self):
+        first = analyze_request({"rows": [row()]})["request_receipt"]["request_fingerprint"]
+        changed = analyze_request({"rows": [row(revenue=501)]})["request_receipt"]["request_fingerprint"]
+        self.assertNotEqual(first, changed)
 
     def test_service_contract_rejects_empty_or_malformed_requests(self):
         with self.assertRaisesRegex(ValueError, "non-empty list"):

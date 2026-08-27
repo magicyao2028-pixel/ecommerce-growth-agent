@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0 - 2026-08-27
+
+- Added a deterministic request receipt to the offline service contract.
+- Excluded generated timestamps from the fingerprint so equivalent retries remain comparable.
+- Added trial and unit regression coverage for stable fingerprints and explicit no-persistence/no-deduplication boundaries.
+
 ## 0.7.0 - 2026-08-25
 
 - Added a versioned offline service contract for row validation, optional thresholds and explanation inclusion.
