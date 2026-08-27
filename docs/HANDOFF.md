@@ -2,8 +2,8 @@
 
 ## Current state
 
-- Release: v0.7.0
-- Maintenance rounds completed: 6/10
+- Release: v0.8.0
+- Maintenance rounds completed: 7/10
 - Runtime: offline Python 3.10+, no third-party runtime dependencies
 - Public data: synthetic only
 - Paid model calls: none
@@ -33,6 +33,12 @@ python -m unittest discover -s tests -v
 - added an optional FastAPI adapter with `/health` and `/v1/analyze`, while keeping FastAPI/Uvicorn out of the default runtime dependencies;
 - contract tests prove malformed requests fail closed and valid responses keep persistence, external actions and human approval explicit.
 
+## M7 evidence
+
+- the service returns a deterministic SHA-256 request receipt over validated rows, effective guardrails and explanation mode;
+- generated timestamps are excluded so equivalent retries can be compared;
+- the receipt is trace metadata only: no payload persistence or distributed deduplication is performed.
+
 ## Next planned round
 
-M7 should improve service observability or contract documentation without adding authentication claims, shared persistence or production deployment. Those remain later work.
+M8 should improve service observability or contract documentation without adding authentication claims, shared persistence, distributed coordination or production deployment. Those remain later work.
