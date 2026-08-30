@@ -6,6 +6,7 @@ from .history import AnalysisHistoryStore, RetentionPolicy, fingerprint_rows
 from .explanation import DeterministicExplanationAdapter, ExplanationAdapter, explain_report
 from .service_contract import analyze_request
 from .request_receipt import build_request_receipt
+from .observability import summarize_request_observability
 
 __all__ = [
     "AnalysisHistoryStore",
@@ -19,5 +20,6 @@ __all__ = [
     "load_thresholds",
     "analyze_request",
     "build_request_receipt",
+    "summarize_request_observability",
 ]
-__version__ = "0.8.0"
+__version__ = "0.9.0"

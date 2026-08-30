@@ -44,6 +44,18 @@
     "persistence_executed": false,
     "deduplication_executed": false
   },
+  "observability_summary": {
+    "passed": true,
+    "request_count": 5,
+    "error_rate": 0.2,
+    "latency_ms": {
+      "min": 120.0,
+      "max": 240.0,
+      "avg": 180.0,
+      "p95": 240.0
+    },
+    "external_actions": 0
+  },
   "external_intake": [
     {
       "repository": "https://github.com/pydantic/pydantic",
@@ -137,6 +149,16 @@
         "src/ecommerce_growth_agent/request_receipt.py",
         "src/ecommerce_growth_agent/trial.py",
         "tests/test_trial.py"
+      ],
+      "passed": true
+    },
+    {
+      "claim_id": "ECOM-OBSERVABILITY-001",
+      "artifact_paths": [
+        "src/ecommerce_growth_agent/observability.py",
+        "data/request_observability.json",
+        "tests/test_observability.py",
+        "src/ecommerce_growth_agent/trial.py"
       ],
       "passed": true
     }

@@ -1,0 +1,7 @@
+[
+  {"request_id": "trial-001", "status": "success", "latency_ms": 120},
+  {"request_id": "trial-002", "status": "success", "latency_ms": 180},
+  {"request_id": "trial-003", "status": "error", "latency_ms": 240, "error_code": "VALIDATION_ERROR"},
+  {"request_id": "trial-004", "status": "success", "latency_ms": 150},
+  {"request_id": "trial-005", "status": "success", "latency_ms": 210}
+]

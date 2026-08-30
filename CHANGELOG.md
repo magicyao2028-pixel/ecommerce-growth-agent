@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.0 - 2026-08-30
+
+- Added a deterministic request-observability summary for caller-supplied redacted events.
+- Added latency/error metrics, validation, synthetic fixture, trial evidence and no-monitoring-write checks.
+
 ## 0.8.0 - 2026-08-27
 
 - Added a deterministic request receipt to the offline service contract.

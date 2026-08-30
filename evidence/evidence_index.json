@@ -101,6 +101,16 @@
         {"kind": "trial", "path": "src/ecommerce_growth_agent/trial.py"},
         {"kind": "tests", "path": "tests/test_trial.py"}
       ]
+    },
+    {
+      "claim_id": "ECOM-OBSERVABILITY-001",
+      "statement": "Caller-supplied redacted request events can be summarized deterministically for review without persistence, monitoring calls or external actions.",
+      "artifacts": [
+        {"kind": "implementation", "path": "src/ecommerce_growth_agent/observability.py"},
+        {"kind": "fixture", "path": "data/request_observability.json"},
+        {"kind": "tests", "path": "tests/test_observability.py"},
+        {"kind": "trial", "path": "src/ecommerce_growth_agent/trial.py"}
+      ]
     }
   ],
   "boundaries": [

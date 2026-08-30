@@ -8,7 +8,8 @@
 - Configuration-aware retry regression: PASS
 - Explanation adapter boundary and fallback: PASS
 - Service retry receipt and no-write boundary: PASS
-- Evidence claims checked: 10
+- Request observability summary and no-monitoring-write boundary: PASS
+- Evidence claims checked: 11
 - External candidates screened: 2
 
 ## Pilot boundary

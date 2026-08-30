@@ -13,6 +13,7 @@ from .config import BusinessThresholds
 from .history import AnalysisHistoryStore, fingerprint_rows
 from .explanation import explain_report
 from .service_contract import analyze_request
+from .observability import summarize_request_observability
 
 
 FEEDBACK_CLASSES = {"defect", "requirement", "usability", "performance", "safety", "documentation"}
@@ -160,6 +161,22 @@ def run_trial(root: Path) -> dict[str, Any]:
         "persistence_executed": service_first["request_receipt"]["persistence_executed"],
         "deduplication_executed": service_first["request_receipt"]["deduplication_executed"],
     }
+    observability_events = json.loads((root / "data" / "request_observability.json").read_text(encoding="utf-8"))
+    observability_summary = summarize_request_observability(observability_events)
+    observability_check = {
+        "passed": (
+            observability_summary["request_count"] == len(observability_events)
+            and observability_summary["error_count"] == 1
+            and observability_summary["review_only"] is True
+            and observability_summary["persistence_executed"] is False
+            and observability_summary["external_action_executed"] is False
+            and observability_summary["monitoring_service_called"] is False
+        ),
+        "request_count": observability_summary["request_count"],
+        "error_rate": observability_summary["error_rate"],
+        "latency_ms": observability_summary["latency_ms"],
+        "external_actions": 0,
+    }
     actual_codes = sorted({item["code"] for item in core_report["findings"]})
     expected = manifest["trial"]["expected"]
     core_passed = (
@@ -228,6 +245,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         feedback_runtime["passed"],
         explanation_check["passed"],
         service_receipt_check["passed"],
+        observability_check["passed"],
         all(item["passed"] for item in evidence_checks),
         all(item["passed"] for item in external_checks),
         feedback_check["passed"],
@@ -247,6 +265,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         "feedback_regression": {**feedback_check, **feedback_runtime},
         "explanation_boundary": explanation_check,
         "service_receipt": service_receipt_check,
+        "observability_summary": observability_check,
         "external_intake": external_checks,
         "evidence_index": evidence_checks,
         "boundaries": manifest["boundaries"],
@@ -265,6 +284,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- Configuration-aware retry regression: {'PASS' if report['feedback_regression']['passed'] else 'FAIL'}",
         f"- Explanation adapter boundary and fallback: {'PASS' if report['explanation_boundary']['passed'] else 'FAIL'}",
         f"- Service retry receipt and no-write boundary: {'PASS' if report['service_receipt']['passed'] else 'FAIL'}",
+        f"- Request observability summary and no-monitoring-write boundary: {'PASS' if report['observability_summary']['passed'] else 'FAIL'}",
         f"- Evidence claims checked: {len(report['evidence_index'])}",
         f"- External candidates screened: {len(report['external_intake'])}",
         "",

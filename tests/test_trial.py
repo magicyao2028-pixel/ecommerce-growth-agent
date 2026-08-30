@@ -31,6 +31,8 @@ class TrialReadinessTests(unittest.TestCase):
         self.assertTrue(report["service_receipt"]["passed"])
         self.assertTrue(report["service_receipt"]["retry_same_fingerprint"])
         self.assertFalse(report["service_receipt"]["persistence_executed"])
+        self.assertTrue(report["observability_summary"]["passed"])
+        self.assertEqual(report["observability_summary"]["request_count"], 5)
 
     def test_evidence_index_links_real_files(self):
         payload = load_json_object(ROOT / "evidence" / "evidence_index.json")

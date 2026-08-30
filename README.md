@@ -25,6 +25,7 @@ Small e-commerce teams often review traffic, orders, advertising and inventory i
 - can add an evidence-constrained explanation while keeping calculations deterministic and external actions human-owned.
 - exposes a versioned offline service contract and an optional FastAPI adapter without making web dependencies mandatory.
 - emits a deterministic retry receipt for the service boundary without persisting request payloads or claiming distributed deduplication.
+- summarizes caller-supplied, already-redacted request latency and error fields for local review without a monitoring service or external write.
 
 ## What this repository demonstrates
 
@@ -148,7 +149,8 @@ The default review thresholds are visible in [`config/business_thresholds.json`]
 - v0.5: reviewer trial, evidence index, governed external screening and feedback regression;
 - v0.6: evidence-constrained explanation adapter with deterministic fallback;
 - v0.7: versioned offline service contract and optional FastAPI adapter;
-- v0.8: deterministic service retry receipt and trial regression (current);
+- v0.8: deterministic service retry receipt and trial regression;
+- v0.9: bounded request-observability summary over caller-supplied telemetry (current);
 - v1.0: controlled pilot with authenticated users, role checks and measured operational outcomes.
 
 ## License

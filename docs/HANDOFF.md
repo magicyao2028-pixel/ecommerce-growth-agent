@@ -2,8 +2,8 @@
 
 ## Current state
 
-- Release: v0.8.0
-- Maintenance rounds completed: 7/10
+- Release: v0.9.0
+- Maintenance rounds completed: 8/10
 - Runtime: offline Python 3.10+, no third-party runtime dependencies
 - Public data: synthetic only
 - Paid model calls: none
@@ -39,6 +39,14 @@ python -m unittest discover -s tests -v
 - generated timestamps are excluded so equivalent retries can be compared;
 - the receipt is trace metadata only: no payload persistence or distributed deduplication is performed.
 
+## M8 evidence
+
+- added a deterministic reducer for caller-supplied, already-redacted request telemetry;
+- validates unique request IDs, finite non-negative latency, status/error-code consistency and non-empty fixtures;
+- reports request/error counts, error rate and min/average/max/p95 latency for reviewer comparison;
+- explicitly records review-only operation with no persistence, monitoring-service call or external action;
+- trial and unit tests cover the summary and its fail-closed validation paths.
+
 ## Next planned round
 
-M8 should improve service observability or contract documentation without adding authentication claims, shared persistence, distributed coordination or production deployment. Those remain later work.
+M9 should improve the service contract or reviewer evidence without adding authentication claims, shared persistence, distributed coordination or production deployment. Those remain later work.
