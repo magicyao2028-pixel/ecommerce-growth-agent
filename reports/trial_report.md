@@ -9,7 +9,8 @@
 - Explanation adapter boundary and fallback: PASS
 - Service retry receipt and no-write boundary: PASS
 - Request observability summary and no-monitoring-write boundary: PASS
-- Evidence claims checked: 11
+- Service response envelope and no-write declarations: PASS
+- Evidence claims checked: 12
 - External candidates screened: 2
 
 ## Pilot boundary

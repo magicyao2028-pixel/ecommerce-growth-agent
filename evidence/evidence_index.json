@@ -111,6 +111,15 @@
         {"kind": "tests", "path": "tests/test_observability.py"},
         {"kind": "trial", "path": "src/ecommerce_growth_agent/trial.py"}
       ]
+    },
+    {
+      "claim_id": "ECOM-RESPONSE-001",
+      "statement": "A response-envelope validator checks fingerprint shape, no-write declarations and human-approval requirements before reviewer or UI consumption.",
+      "artifacts": [
+        {"kind": "implementation", "path": "src/ecommerce_growth_agent/service_response.py"},
+        {"kind": "tests", "path": "tests/test_service_response.py"},
+        {"kind": "trial", "path": "src/ecommerce_growth_agent/trial.py"}
+      ]
     }
   ],
   "boundaries": [

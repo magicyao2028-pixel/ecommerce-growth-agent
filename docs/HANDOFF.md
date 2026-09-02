@@ -2,8 +2,8 @@
 
 ## Current state
 
-- Release: v0.9.0
-- Maintenance rounds completed: 8/10
+- Release: v1.0.0
+- Maintenance rounds completed: 9/10
 - Runtime: offline Python 3.10+, no third-party runtime dependencies
 - Public data: synthetic only
 - Paid model calls: none
@@ -49,4 +49,10 @@ python -m unittest discover -s tests -v
 
 ## Next planned round
 
-M9 should improve the service contract or reviewer evidence without adding authentication claims, shared persistence, distributed coordination or production deployment. Those remain later work.
+M10 should improve the service contract or reviewer evidence without adding authentication claims, shared persistence, distributed coordination or production deployment. Those remain later work.
+
+## M9 evidence
+
+- the response envelope validates schema/status, SHA-256 request-fingerprint shape and report/receipt/governance presence;
+- no-write declarations and human approval remain mandatory before reviewer or UI consumption;
+- invalid fingerprints and external-action declarations fail closed; no authentication or production authorization is claimed.

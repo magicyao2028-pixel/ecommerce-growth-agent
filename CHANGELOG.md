@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0 - 2026-09-02
+
+- added a response-envelope validator for reviewer and UI consumers;
+- validated request-fingerprint shape, no-write declarations and human approval requirements;
+- added fail-closed tests while preserving offline, synthetic and non-production boundaries.
+
 ## 0.9.0 - 2026-08-30
 
 - Added a deterministic request-observability summary for caller-supplied redacted events.

@@ -14,6 +14,7 @@ from .history import AnalysisHistoryStore, fingerprint_rows
 from .explanation import explain_report
 from .service_contract import analyze_request
 from .observability import summarize_request_observability
+from .service_response import validate_service_response
 
 
 FEEDBACK_CLASSES = {"defect", "requirement", "usability", "performance", "safety", "documentation"}
@@ -148,6 +149,7 @@ def run_trial(root: Path) -> dict[str, Any]:
     }
     service_first = analyze_request(service_payload)
     service_retry = analyze_request({**service_payload, "generated_at": "2026-08-18T00:00:00+00:00"})
+    response_check = validate_service_response(service_first)
     service_receipt_check = {
         "passed": (
             service_first["request_receipt"] == service_retry["request_receipt"]
@@ -245,6 +247,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         feedback_runtime["passed"],
         explanation_check["passed"],
         service_receipt_check["passed"],
+        response_check["valid"],
         observability_check["passed"],
         all(item["passed"] for item in evidence_checks),
         all(item["passed"] for item in external_checks),
@@ -265,6 +268,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         "feedback_regression": {**feedback_check, **feedback_runtime},
         "explanation_boundary": explanation_check,
         "service_receipt": service_receipt_check,
+        "service_response": response_check,
         "observability_summary": observability_check,
         "external_intake": external_checks,
         "evidence_index": evidence_checks,
@@ -285,6 +289,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- Explanation adapter boundary and fallback: {'PASS' if report['explanation_boundary']['passed'] else 'FAIL'}",
         f"- Service retry receipt and no-write boundary: {'PASS' if report['service_receipt']['passed'] else 'FAIL'}",
         f"- Request observability summary and no-monitoring-write boundary: {'PASS' if report['observability_summary']['passed'] else 'FAIL'}",
+        f"- Service response envelope and no-write declarations: {'PASS' if report['service_response']['valid'] else 'FAIL'}",
         f"- Evidence claims checked: {len(report['evidence_index'])}",
         f"- External candidates screened: {len(report['external_intake'])}",
         "",

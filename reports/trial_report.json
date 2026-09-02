@@ -44,6 +44,15 @@
     "persistence_executed": false,
     "deduplication_executed": false
   },
+  "service_response": {
+    "schema_version": "1.0",
+    "valid": true,
+    "request_fingerprint": "sha256:f007f4bc01a115e22a1b770441aacdff9ed1155dd9f6042acbcacccb401c7529",
+    "human_approval_required": true,
+    "persistence_executed": false,
+    "external_action_executed": false,
+    "boundary": "Envelope validation proves shape and no-write declarations; it does not authenticate callers or authorize production actions."
+  },
   "observability_summary": {
     "passed": true,
     "request_count": 5,
@@ -158,6 +167,15 @@
         "src/ecommerce_growth_agent/observability.py",
         "data/request_observability.json",
         "tests/test_observability.py",
+        "src/ecommerce_growth_agent/trial.py"
+      ],
+      "passed": true
+    },
+    {
+      "claim_id": "ECOM-RESPONSE-001",
+      "artifact_paths": [
+        "src/ecommerce_growth_agent/service_response.py",
+        "tests/test_service_response.py",
         "src/ecommerce_growth_agent/trial.py"
       ],
       "passed": true

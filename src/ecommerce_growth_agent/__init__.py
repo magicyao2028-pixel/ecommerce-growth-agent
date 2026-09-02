@@ -7,6 +7,7 @@ from .explanation import DeterministicExplanationAdapter, ExplanationAdapter, ex
 from .service_contract import analyze_request
 from .request_receipt import build_request_receipt
 from .observability import summarize_request_observability
+from .service_response import validate_service_response
 
 __all__ = [
     "AnalysisHistoryStore",
@@ -21,5 +22,6 @@ __all__ = [
     "analyze_request",
     "build_request_receipt",
     "summarize_request_observability",
+    "validate_service_response",
 ]
-__version__ = "0.9.0"
+__version__ = "1.0.0"
