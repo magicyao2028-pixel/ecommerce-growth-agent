@@ -2,9 +2,9 @@
 
 ## Current state
 
-- Release stage: v0.8 trial-readiness prototype.
-- Maintenance completed: M7/10.
-- Core capability: offline KPI analysis, SKU diagnosis, prioritized actions, configurable guardrails, bounded local summary history, a governed explanation boundary and a versioned service contract with deterministic retry receipts.
+- Release stage: v1.0 trial-readiness prototype.
+- Maintenance completed: M9/10.
+- Core capability: offline KPI analysis, SKU diagnosis, prioritized actions, configurable guardrails, bounded local summary history, a governed explanation boundary, deterministic retry receipts, request observability and a validated service-response envelope.
 - Public data: synthetic only.
 - Runtime cost: zero paid API dependency.
 
@@ -18,15 +18,17 @@ growth-agent-eval
 growth-agent-trial
 ```
 
-## Maintenance completed in M5-M7
+## Maintenance completed in M5-M9
 
 - M5: evidence-constrained explanation adapter with deterministic fallback.
 - M6: versioned offline service contract and optional FastAPI adapter.
 - M7: deterministic request receipt for retry tracing; timestamps are excluded from the fingerprint and no persistence or distributed deduplication is claimed.
+- M8: caller-supplied redacted request-observability summary with deterministic latency/error statistics and no monitoring-service call.
+- M9: response-envelope validator for schema/status, request-fingerprint shape, no-write declarations and human-approval requirements.
 
 ## Next maintenance round
 
-M8 should add a small, testable request-observability summary (latency/error fields supplied by the caller) while preserving the offline, no-write boundary.
+M10 should add a small, testable service-contract or reviewer-evidence improvement while preserving the offline, no-write boundary. Do not add authentication, shared persistence or production authorization claims.
 
 ## Known limitations
 
