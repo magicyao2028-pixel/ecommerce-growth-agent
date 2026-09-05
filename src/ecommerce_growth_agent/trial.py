@@ -15,6 +15,7 @@ from .explanation import explain_report
 from .service_contract import analyze_request
 from .observability import summarize_request_observability
 from .service_response import validate_service_response
+from .response_review import audit_response_review_feedback
 
 
 FEEDBACK_CLASSES = {"defect", "requirement", "usability", "performance", "safety", "documentation"}
@@ -150,6 +151,9 @@ def run_trial(root: Path) -> dict[str, Any]:
     service_first = analyze_request(service_payload)
     service_retry = analyze_request({**service_payload, "generated_at": "2026-08-18T00:00:00+00:00"})
     response_check = validate_service_response(service_first)
+    response_feedback = json.loads((root / "data" / "response_review_feedback.json").read_text(encoding="utf-8"))
+    response_feedback = [dict(item, request_fingerprint=service_first["request_receipt"]["request_fingerprint"]) for item in response_feedback]
+    response_review = audit_response_review_feedback(service_first, response_feedback)
     service_receipt_check = {
         "passed": (
             service_first["request_receipt"] == service_retry["request_receipt"]
@@ -248,6 +252,10 @@ def run_trial(root: Path) -> dict[str, Any]:
         explanation_check["passed"],
         service_receipt_check["passed"],
         response_check["valid"],
+        response_review["accepted_count"] == 1
+        and response_review["excluded_count"] == 2
+        and response_review["persistence_executed"] is False
+        and response_review["external_action_executed"] is False,
         observability_check["passed"],
         all(item["passed"] for item in evidence_checks),
         all(item["passed"] for item in external_checks),
@@ -269,6 +277,7 @@ def run_trial(root: Path) -> dict[str, Any]:
         "explanation_boundary": explanation_check,
         "service_receipt": service_receipt_check,
         "service_response": response_check,
+        "response_review": response_review,
         "observability_summary": observability_check,
         "external_intake": external_checks,
         "evidence_index": evidence_checks,
@@ -290,6 +299,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"- Service retry receipt and no-write boundary: {'PASS' if report['service_receipt']['passed'] else 'FAIL'}",
         f"- Request observability summary and no-monitoring-write boundary: {'PASS' if report['observability_summary']['passed'] else 'FAIL'}",
         f"- Service response envelope and no-write declarations: {'PASS' if report['service_response']['valid'] else 'FAIL'}",
+        f"- Response-review audit and accepted-only visibility: {'PASS' if report['response_review']['accepted_count'] == 1 and report['response_review']['excluded_count'] == 2 else 'FAIL'}",
         f"- Evidence claims checked: {len(report['evidence_index'])}",
         f"- External candidates screened: {len(report['external_intake'])}",
         "",

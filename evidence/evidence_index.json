@@ -120,6 +120,16 @@
         {"kind": "tests", "path": "tests/test_service_response.py"},
         {"kind": "trial", "path": "src/ecommerce_growth_agent/trial.py"}
       ]
+    },
+    {
+      "claim_id": "ECOM-RESPONSE-REVIEW-001",
+      "statement": "Reviewer feedback can be matched to a response fingerprint and separated into accepted versus pending or rejected records without applying changes.",
+      "artifacts": [
+        {"kind": "implementation", "path": "src/ecommerce_growth_agent/response_review.py"},
+        {"kind": "fixture", "path": "data/response_review_feedback.json"},
+        {"kind": "tests", "path": "tests/test_response_review.py"},
+        {"kind": "trial", "path": "src/ecommerce_growth_agent/trial.py"}
+      ]
     }
   ],
   "boundaries": [

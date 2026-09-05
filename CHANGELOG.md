@@ -2,6 +2,9 @@
 
 ## 1.0.0 - 2026-09-02
 
+- added response-review audit matched to the deterministic request fingerprint;
+- separated accepted, pending and rejected synthetic reviewer feedback without applying changes;
+- added trial, fixture and fail-closed regression coverage for the review-only boundary.
 - added a response-envelope validator for reviewer and UI consumers;
 - validated request-fingerprint shape, no-write declarations and human approval requirements;
 - added fail-closed tests while preserving offline, synthetic and non-production boundaries.

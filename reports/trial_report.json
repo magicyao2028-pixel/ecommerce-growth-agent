@@ -53,6 +53,40 @@
     "external_action_executed": false,
     "boundary": "Envelope validation proves shape and no-write declarations; it does not authenticate callers or authorize production actions."
   },
+  "response_review": {
+    "schema_version": "1.0",
+    "request_fingerprint": "sha256:f007f4bc01a115e22a1b770441aacdff9ed1155dd9f6042acbcacccb401c7529",
+    "record_count": 3,
+    "status_counts": {
+      "accepted": 1,
+      "pending": 1,
+      "rejected": 1
+    },
+    "accepted_count": 1,
+    "excluded_count": 2,
+    "accepted": [
+      {
+        "feedback_id": "RESP-FB-001",
+        "status": "accepted",
+        "passed": true
+      }
+    ],
+    "excluded": [
+      {
+        "feedback_id": "RESP-FB-002",
+        "status": "pending",
+        "passed": true
+      },
+      {
+        "feedback_id": "RESP-FB-003",
+        "status": "rejected",
+        "passed": true
+      }
+    ],
+    "persistence_executed": false,
+    "external_action_executed": false,
+    "boundary": "Reviewer feedback is audited against one response envelope; it does not modify reports, stores or external systems."
+  },
   "observability_summary": {
     "passed": true,
     "request_count": 5,
@@ -176,6 +210,16 @@
       "artifact_paths": [
         "src/ecommerce_growth_agent/service_response.py",
         "tests/test_service_response.py",
+        "src/ecommerce_growth_agent/trial.py"
+      ],
+      "passed": true
+    },
+    {
+      "claim_id": "ECOM-RESPONSE-REVIEW-001",
+      "artifact_paths": [
+        "src/ecommerce_growth_agent/response_review.py",
+        "data/response_review_feedback.json",
+        "tests/test_response_review.py",
         "src/ecommerce_growth_agent/trial.py"
       ],
       "passed": true

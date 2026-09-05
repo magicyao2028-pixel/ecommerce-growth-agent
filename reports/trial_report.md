@@ -10,7 +10,8 @@
 - Service retry receipt and no-write boundary: PASS
 - Request observability summary and no-monitoring-write boundary: PASS
 - Service response envelope and no-write declarations: PASS
-- Evidence claims checked: 12
+- Response-review audit and accepted-only visibility: PASS
+- Evidence claims checked: 13
 - External candidates screened: 2
 
 ## Pilot boundary

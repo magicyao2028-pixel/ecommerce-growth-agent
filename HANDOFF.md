@@ -3,7 +3,7 @@
 ## Current state
 
 - Release stage: v1.0 trial-readiness prototype.
-- Maintenance completed: M9/10.
+- Maintenance completed: M10/10.
 - Core capability: offline KPI analysis, SKU diagnosis, prioritized actions, configurable guardrails, bounded local summary history, a governed explanation boundary, deterministic retry receipts, request observability and a validated service-response envelope.
 - Public data: synthetic only.
 - Runtime cost: zero paid API dependency.
@@ -25,10 +25,11 @@ growth-agent-trial
 - M7: deterministic request receipt for retry tracing; timestamps are excluded from the fingerprint and no persistence or distributed deduplication is claimed.
 - M8: caller-supplied redacted request-observability summary with deterministic latency/error statistics and no monitoring-service call.
 - M9: response-envelope validator for schema/status, request-fingerprint shape, no-write declarations and human-approval requirements.
+- M10: response-review audit matched synthetic feedback to the response fingerprint, separated accepted from pending/rejected records and preserved the no-write boundary.
 
 ## Next maintenance round
 
-M10 should add a small, testable service-contract or reviewer-evidence improvement while preserving the offline, no-write boundary. Do not add authentication, shared persistence or production authorization claims.
+M10 is complete. The next step is portfolio-level review or a separately confirmed maintenance wave; do not infer authentication, shared persistence or production authorization from this prototype.
 
 ## Known limitations
 
