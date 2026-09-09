@@ -58,7 +58,7 @@ python -m unittest discover -s tests -v
 - added a response-review audit that binds synthetic reviewer feedback to the current response fingerprint;
 - accepted records are reported separately from pending or rejected records;
 - the audit remains deterministic and preserves zero persistence, zero external action and explicit human approval;
-- the trial and tests cover valid reconciliation plus stale, duplicate and mismatched feedback boundaries.
+- the trial and tests cover valid reconciliation plus chronological, duplicate and fingerprint-mismatch feedback boundaries.
 
 ## Next planned round
 
